@@ -56,7 +56,7 @@
     <Compile Include="AddToToolbox.cs" />
     <Compile Include="AddToToolboxPackage.cs" />
     <Compile Include="DemoSnippetsParser.cs" />
-    <Compile Include="ItemsToAdd.cs" />
+    <Compile Include="ItemToAdd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,10 +71,8 @@
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
-    <Content Include="index.html" />
     <Content Include="Resources\AddToToolbox.png" />
     <Content Include="Resources\AddToToolboxPackage.ico" />
-    <Content Include="stylesheet.css" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.VisualStudio.SDK.Analyzers.15.8.36\analyzers\cs\Microsoft.VisualStudio.SDK.Analyzers.dll" />
@@ -145,7 +143,9 @@
       <Version>15.0.82</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
-      <Version>15.9.3035</Version>
+      <Version>15.9.3032</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

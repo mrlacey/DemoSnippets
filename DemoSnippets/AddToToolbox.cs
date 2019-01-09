@@ -55,8 +55,6 @@ namespace DemoSnippets
 
         private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
         {
-            try
-            {
                 ThreadHelper.ThrowIfNotOnUIThread();
 
                 if (sender is OleMenuCommand menuCmd)
@@ -80,11 +78,6 @@ namespace DemoSnippets
                         menuCmd.Visible = menuCmd.Enabled = true;
                     }
                 }
-            }
-            catch (Exception exc)
-            {
-                //this.Logger.RecordException(exc);
-            }
         }
 
         /// <summary>
