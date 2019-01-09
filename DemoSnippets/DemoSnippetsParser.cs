@@ -8,5 +8,14 @@ namespace DemoSnippets
 {
     public class DemoSnippetsParser
     {
+        public List<ItemsToAdd> GetItemsToAdd(string[] lines)
+        {
+            var result = new List<ItemsToAdd>();
+
+
+            result.Add(new ItemsToAdd { Label = "lbl", Snippet = "add this text" });
+
+            return result;
+        }
     }
 }
