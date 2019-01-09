@@ -201,7 +201,7 @@ namespace DemoSnippets.Tests
         private List<ItemToAdd> ParseAsLines(string lines)
         {
             var sut = new DemoSnippetsParser();
-            return sut.GetItemsToAdd(lines.Split(Environment.NewLine));
+            return sut.GetItemsToAdd(lines.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
         }
     }
 }
