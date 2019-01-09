@@ -198,11 +198,11 @@ namespace DemoSnippets
 
             foreach (var item in toAdd)
             {
-                await AddToToolboxAsync(item.Label, item.Snippet);
+                await AddToToolboxAsync(item.Tab, item.Label, item.Snippet);
             }
         }
 
-        private static async Task AddToToolboxAsync(string label, string actualText)
+        private static async Task AddToToolboxAsync(string tab, string label, string actualText)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
 
@@ -212,15 +212,20 @@ namespace DemoSnippets
             var tbItem = new OleDataObject();
 
             var executionPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-          //  var bitmap = new System.Drawing.Bitmap(Path.Combine(executionPath, "Resources", "MarkupTag_16x.png"));
 
-           // itemInfo[0].hBmp = bitmap.GetHbitmap();
             itemInfo[0].bstrText = label;
             itemInfo[0].dwFlags = (uint)__TBXITEMINFOFLAGS.TBXIF_DONTPERSIST;
 
             tbItem.SetText(actualText, TextDataFormat.Text);
 
-            tbs?.AddItem(tbItem, itemInfo, "Demo");
+            var tabLabel = "Demo"; // Default value
+
+            if (!string.IsNullOrWhiteSpace(tab))
+            {
+                tabLabel = tab.Trim();
+            }
+
+            tbs?.AddItem(tbItem, itemInfo, tabLabel);
         }
 
     }

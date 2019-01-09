@@ -24,6 +24,27 @@ namespace DemoSnippets
                     continue;
                 }
 
+                if (line.ToLowerInvariant().StartsWith("tab:"))
+                {
+                    if (toAdd == null)
+                    {
+                        toAdd = new ItemToAdd();
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(toAdd.Snippet))
+                    {
+                        toAdd.Snippet = toAdd.Snippet.Trim();
+
+                        result.Add(toAdd);
+
+                        toAdd = new ItemToAdd();
+                    }
+
+                    toAdd.Tab = line.Substring(4).Trim();
+
+                    continue;
+                }
+
                 if (line.StartsWith("-"))
                 {
                     if (toAdd == null)
@@ -42,7 +63,9 @@ namespace DemoSnippets
 
                             result.Add(toAdd);
 
-                            toAdd = new ItemToAdd { Label = line.Substring(1).Trim() };
+                            var currentTab = toAdd.Tab;
+
+                            toAdd = new ItemToAdd { Label = line.Substring(1).Trim(), Tab = currentTab };
                         }
                     }
                 }
