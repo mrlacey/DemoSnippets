@@ -10,8 +10,6 @@ or get the [CI build](http://vsixgallery.com/extension/DemoSnippets.e2d68c23-859
 Visual Studio extension that provides a command for adding the contents of *.demosnippets to the Toolbox.
 Intended to make it easy to use code snippets in demos.
 
-See the [change log](CHANGELOG.md) for changes and road map.
-
 ![screenshot](./art/screenshot.png)
 
 ## Features
@@ -25,6 +23,8 @@ See the [change log](CHANGELOG.md) for changes and road map.
 - Labels (displayed in the toolbox) start with a hyphen.
 - Text between labels is included as the contents of the snippet.
 
+
+See the [change log](CHANGELOG.md) for changes and road map.
 
 
 ## Contribute
