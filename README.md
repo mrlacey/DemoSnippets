@@ -2,8 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/n2awlsnbjapax7uf?svg=true)](https://ci.appveyor.com/project/mrlacey/demosnippets)
 
-<!-- Update the VS Gallery link after you upload the VSIX-->
-Download this extension from the [VS Gallery](https://visualstudiogallery.msdn.microsoft.com/[GuidFromGallery])
+Download this extension from the [VS Gallery](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets)
 or get the [CI build](http://vsixgallery.com/extension/DemoSnippets.e2d68c23-8599-40e8-b402-a57060bf3d29/).
 
 ---------------------------------------
@@ -22,9 +21,9 @@ See the [change log](CHANGELOG.md) for changes and road map.
 
 ### .demosnippets file
 
-- Comment lines start with a hash
-- Labels (displayed in te toolbox) start with a hyphen
-- Text between labels is included as the contents of the .
+- Comment lines start with a hash.
+- Labels (displayed in the toolbox) start with a hyphen.
+- Text between labels is included as the contents of the snippet.
 
 
 
