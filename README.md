@@ -1,7 +1,6 @@
-# DemoSnippets
+# Demo Snippets
 
-<!-- Replace this badge with your own-->
-[![Build status](https://ci.appveyor.com/api/projects/status/hv6uyc059rqbc6fj?svg=true)](https://ci.appveyor.com/project/madskristensen/extensibilitytools)
+[![Build status](https://ci.appveyor.com/api/projects/status/n2awlsnbjapax7uf?svg=true)](https://ci.appveyor.com/project/mrlacey/demosnippets)
 
 <!-- Update the VS Gallery link after you upload the VSIX-->
 Download this extension from the [VS Gallery](https://visualstudiogallery.msdn.microsoft.com/[GuidFromGallery])
@@ -9,24 +8,25 @@ or get the [CI build](http://vsixgallery.com/extension/DemoSnippets.e2d68c23-859
 
 ---------------------------------------
 
-Empty VSIX Project.
+Visual Studio extension that provides a command for adding the contents of *.demosnippets to the Toolbox.
+Intended to make it easy to use code snippets in demos.
 
 See the [change log](CHANGELOG.md) for changes and road map.
 
+![screenshot](./art/screenshot.png)
+
 ## Features
 
-- Feature 1
-- Feature 2
-  - Sub feature
+- Store your code snippets in a file with a **.demosnippets** extension.
+- Right-click on the file in Solution Explorer and select 'Add to Toolbox'
 
-### Feature 1
-Describe feature 1. Add screenshots/code samples etc.
+### .demosnippets file
 
-### Feature 2
-Describe feature 2. Add screenshots/code samples etc.
+- Comment lines start with a hash
+- Labels (displayed in te toolbox) start with a hyphen
+- Text between labels is included as the contents of the .
 
-#### Sub feature
-Describe sub feature. Add screenshots/code samples etc.
+
 
 ## Contribute
 Check out the [contribution guidelines](CONTRIBUTING.md)
