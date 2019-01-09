@@ -5,6 +5,8 @@
 Download this extension from the [VS Gallery](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets)
 or get the [CI build](http://vsixgallery.com/extension/DemoSnippets.e2d68c23-8599-40e8-b402-a57060bf3d29/).
 
+Supports Visual Studio 2017 & 2019
+
 ---------------------------------------
 
 Visual Studio extension that provides a command for adding the contents of *.demosnippets to the Toolbox.
@@ -15,13 +17,14 @@ Intended to make it easy to use code snippets in demos.
 ## Features
 
 - Store your code snippets in a file with a **.demosnippets** extension.
-- Right-click on the file in Solution Explorer and select 'Add to Toolbox'
+- Right-click on the file in Solution Explorer and select 'Add to Toolbox'.
 
 ### .demosnippets file
 
 - Comment lines start with a hash.
 - Labels (displayed in the toolbox) start with a hyphen.
 - Text between labels is included as the contents of the snippet.
+- Snippets are added to the "Demo" tab. This can be overridden by specifying a tab name in a line starting "Tab:".
 
 
 See the [change log](CHANGELOG.md) for changes and road map.
