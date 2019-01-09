@@ -48,6 +48,7 @@ namespace DemoSnippets.Tests
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("Step 1", actual[0].Label);
             Assert.AreEqual($"snippet line 1{Environment.NewLine}snippet line 2", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].TabLabel);
         }
 
         [TestMethod]
@@ -71,8 +72,10 @@ namespace DemoSnippets.Tests
             Assert.AreEqual(2, actual.Count);
             Assert.AreEqual("Step 1", actual[0].Label);
             Assert.AreEqual($"snippet line 1{Environment.NewLine}snippet line 2", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].TabLabel);
             Assert.AreEqual("Step 2", actual[1].Label);
             Assert.AreEqual($"snippet2 line 1{Environment.NewLine}snippet2 line 2", actual[1].Snippet);
+            Assert.AreEqual(string.Empty, actual[1].TabLabel);
         }
 
         [TestMethod]
@@ -91,6 +94,7 @@ namespace DemoSnippets.Tests
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("snippet line 1", actual[0].Label);
             Assert.AreEqual($"snippet line 1{Environment.NewLine}snippet line 2", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].TabLabel);
         }
 
         [TestMethod]
@@ -112,6 +116,7 @@ namespace DemoSnippets.Tests
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("Step 1", actual[0].Label);
             Assert.AreEqual($"snippet line 1{Environment.NewLine}snippet line 2", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].TabLabel);
         }
 
         [TestMethod]
@@ -135,8 +140,10 @@ namespace DemoSnippets.Tests
             Assert.AreEqual(2, actual.Count);
             Assert.AreEqual("Add this", actual[0].Label);
             Assert.AreEqual($"snippet line 1{Environment.NewLine}snippet line 2", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].TabLabel);
             Assert.AreEqual("Add this", actual[1].Label);
             Assert.AreEqual($"snippet2 line 1{Environment.NewLine}snippet2 line 2", actual[1].Snippet);
+            Assert.AreEqual(string.Empty, actual[1].TabLabel);
         }
 
         [TestMethod]
@@ -152,6 +159,7 @@ namespace DemoSnippets.Tests
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("Step 1", actual[0].Label);
             Assert.AreEqual($"snippet line 1", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].TabLabel);
         }
 
         [TestMethod]
@@ -174,6 +182,7 @@ namespace DemoSnippets.Tests
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("Step 1", actual[0].Label);
             Assert.AreEqual($"snippet line 1{Environment.NewLine}snippet line 2", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].TabLabel);
         }
 
         [TestMethod]
@@ -196,6 +205,7 @@ namespace DemoSnippets.Tests
             Assert.AreEqual(1, actual.Count);
             Assert.AreEqual("Step 1", actual[0].Label);
             Assert.AreEqual($"snippet line 1{Environment.NewLine}snippet line 2", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].TabLabel);
         }
 
         private List<ItemToAdd> ParseAsLines(string lines)
