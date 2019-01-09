@@ -1,5 +1,8 @@
 # Road map
 
+- [x] Support installation on VS2019
+- [ ] Allow setting which tab in the toolbox snippets are added to
+- [ ] Allow processing multiple .demosnipptes files at once
 - [ ] Open to suggestions...
 
 Features that have a checkmark are complete and available for
