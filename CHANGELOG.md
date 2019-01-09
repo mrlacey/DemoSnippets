@@ -1,7 +1,5 @@
 # Road map
 
-- [x] Support installation on VS2019
-- [x] Allow setting which tab in the toolbox snippets are added to
 - [ ] Allow processing multiple .demosnipptes files at once
 - [ ] Open to suggestions...
 
@@ -13,6 +11,11 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+## 1.1
+
+- [x] Support installation on VS2019
+- [x] Allow setting which tab in the toolbox snippets are added to
 
 ## 1.0
 
