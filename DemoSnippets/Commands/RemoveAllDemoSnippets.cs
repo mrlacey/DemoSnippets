@@ -48,7 +48,7 @@ namespace DemoSnippets.Commands
 
             await OutputPane.Instance.WriteAsync($"Attempting to remove all demosnippets from the toolbox.");
 
-            await ToolboxInteractionLogic.RemoveAllDemoSnippetsAsync();
+            await ToolboxInteractionLogic.RemoveAllDemoSnippetsAsync(CancellationToken.None);
         }
     }
 }

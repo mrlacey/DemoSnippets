@@ -34,8 +34,6 @@ namespace DemoSnippets
         {
         }
 
-        private static List<ToolboxEntry> TrackedSnippets { get; set; } = new List<ToolboxEntry>();
-
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
         /// where you can put all the initialization code that rely on services provided by VisualStudio.
@@ -49,10 +47,17 @@ namespace DemoSnippets
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
+            await OutputPane.Instance.WriteAsync("The DemoSnippets extension works with .demosnippets files. Learn more at https://github.com/mrlacey/DemoSnippets ");
+            await OutputPane.Instance.WriteAsync("If you have problems with this extension, or suggestions for improvement, report them at https://github.com/mrlacey/DemoSnippets/issues/new ");
+            await OutputPane.Instance.WriteAsync("If you like this extension please lease a review at https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets#review-details ");
+            await OutputPane.Instance.WriteAsync(string.Empty);
+
             await ToolboxInteractionLogic.InitializeAsync(this);
             await AddToToolbox.InitializeAsync(this);
             await RemoveAllDemoSnippets.InitializeAsync(this);
             await AddAllDemoSnippets.InitializeAsync(this);
+
+            // TODO: Make auto-load/unload configurable
 
             // Since this package might not be initialized until after a solution has finished loading,
             // we need to check if a solution has already been loaded and then handle it.
@@ -63,7 +68,6 @@ namespace DemoSnippets
                 await this.HandleOpenSolutionAsync(cancellationToken);
             }
 
-            // TODO: Make auto-load/unload configurable
             // Listen for subsequent solution events
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenSolution += this.HandleOpenSolution;
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterCloseSolution += this.HandleCloseSolution;
@@ -76,20 +80,10 @@ namespace DemoSnippets
 
         private async Task HandleCloseSolutionAsync(CancellationToken cancellationToken)
         {
-            var snippetsToTryAndRemove = new List<ToolboxEntry>(TrackedSnippets);
+            // TODO: make configurable
+            await OutputPane.Instance.WriteAsync("Removing DemoSnippets from the Toolbox as solution has been closed.");
 
-            foreach (var toTryAndRemove in snippetsToTryAndRemove)
-            {
-                await ToolboxInteractionLogic.RemoveFromToolboxAsync(toTryAndRemove, cancellationToken);
-                TrackedSnippets.Remove(toTryAndRemove);
-            }
-
-            var tabsToTryAndRemove = snippetsToTryAndRemove.Select(s => s.Tab).Distinct().ToList();
-
-            foreach (var tab in tabsToTryAndRemove)
-            {
-                await ToolboxInteractionLogic.RemoveTabIfEmptyAsync(tab, cancellationToken);
-            }
+            await ToolboxInteractionLogic.RemoveAllDemoSnippetsAsync(cancellationToken);
         }
 
         private async Task<bool> IsSolutionLoadedAsync(CancellationToken cancellationToken)
@@ -126,13 +120,18 @@ namespace DemoSnippets
                 if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
                 {
                     var slnDir = Path.GetDirectoryName(fileName);
-                    await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
-                }
+#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
+                    var (fileCount, snippetCount) = await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
+#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
 
-                if (TrackedSnippets.Any())
+                    var filePlural = fileCount == 1 ? string.Empty : "s";
+                    var snippetPlural = snippetCount == 1 ? string.Empty : "s";
+
+                    await OutputPane.Instance.WriteAsync($"Added {snippetCount} snippet{snippetPlural}, from {fileCount} file{filePlural} to the Toolbox.");
+                }
+                else
                 {
-                    var plural = TrackedSnippets.Count > 1 ? "s" : string.Empty;
-                    await OutputPane.Instance.WriteAsync($"Added {TrackedSnippets.Count} snippet{plural} to Toolbox.");
+                    await OutputPane.Instance.WriteAsync("Could not access solution file to use to find .demosnippets files.");
                 }
             }
         }

@@ -22,6 +22,7 @@ namespace DemoSnippets
     {
         private const string DefaultTabName = "Demo";
         private const string ToolboxDataSourceId = "DemoSnippets";
+        private const string ToolboxDataLabel = "DSLabel";
 
         private readonly AsyncPackage package;
 
@@ -41,12 +42,14 @@ namespace DemoSnippets
             Instance = new ToolboxInteractionLogic(package);
         }
 
-        public static async Task LoadToolboxItemsAsync(string fileName, Action<ToolboxEntry> alsoWithEachItem = null)
+        public static async Task<int> LoadToolboxItemsAsync(string fileName)
         {
             var lines = File.ReadAllLines(fileName);
 
             var dsp = new DemoSnippetsParser();
             var toAdd = dsp.GetItemsToAdd(lines);
+
+            var addedCount = 0;
 
             foreach (var item in toAdd)
             {
@@ -55,10 +58,11 @@ namespace DemoSnippets
                     item.Tab = DefaultTabName;
                 }
 
-                var obj = await AddToToolboxAsync(item.Tab, item.Label, item.Snippet);
-
-                alsoWithEachItem?.Invoke(item);
+                await AddToToolboxAsync(item.Tab, item.Label, item.Snippet);
+                addedCount += 1;
             }
+
+            return addedCount;
         }
 
         public static async Task RemoveFromToolboxAsync(ToolboxEntry item, CancellationToken cancellationToken)
@@ -140,9 +144,9 @@ namespace DemoSnippets
             }
         }
 
-        public static async Task RemoveAllDemoSnippetsAsync()
+        public static async Task RemoveAllDemoSnippetsAsync(CancellationToken cancellationToken)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             try
             {
@@ -179,6 +183,10 @@ namespace DemoSnippets
 
                                     if (isDemoSnippet != null)
                                     {
+                                        var label = itemDataObject.GetData(ToolboxDataLabel).ToString();
+
+                                        await OutputPane.Instance.WriteAsync($"Removing '{label}' from tab '{tabName}'");
+
                                         toolbox?.RemoveItem(dataObjects[0]);
                                         tabsToRemove.Add(tabName);
                                     }
@@ -203,18 +211,35 @@ namespace DemoSnippets
             }
         }
 
-        // TODO : have this return number of files and snippets added
-        public static async Task ProcessAllSnippetFilesAsync(string slnDirectory)
+#pragma warning disable SA1009 // Closing parenthesis must be spaced correctly
+        public static async Task<(int files, int snippets)> ProcessAllSnippetFilesAsync(string slnDirectory)
+#pragma warning restore SA1009 // Closing parenthesis must be spaced correctly
         {
             await OutputPane.Instance.WriteAsync($"Loading *.demosnippets files under: {slnDirectory}");
 
             var allSnippetFiles = Directory.EnumerateFiles(slnDirectory, "*.demosnippets", SearchOption.AllDirectories);
 
+            var fileCount = 0;
+            var itemsCount = 0;
+
             foreach (var snippetFile in allSnippetFiles)
             {
-                await OutputPane.Instance.WriteAsync($"Loading items from: {snippetFile}");
-                await LoadToolboxItemsAsync(snippetFile);
+                await OutputPane.Instance.WriteAsync($"Loading snippets from: {snippetFile}");
+
+                var added = await LoadToolboxItemsAsync(snippetFile);
+
+                if (added == 0)
+                {
+                    await OutputPane.Instance.WriteAsync($"Found nothing to add in {snippetFile}");
+                }
+                else
+                {
+                    fileCount += 1;
+                    itemsCount += added;
+                }
             }
+
+            return (fileCount, itemsCount);
         }
 
         private static async Task<IDataObject> AddToToolboxAsync(string tab, string label, string actualText)
@@ -228,9 +253,6 @@ namespace DemoSnippets
                 var itemInfo = new TBXITEMINFO[1];
                 var tbItem = new OleDataObject();
 
-                // TODO: see if can remove this
-                var executionPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
                 itemInfo[0].bstrText = label;
                 itemInfo[0].dwFlags = (uint)__TBXITEMINFOFLAGS.TBXIF_DONTPERSIST;
 
@@ -238,6 +260,9 @@ namespace DemoSnippets
 
                 // Add identifier so can know which entries were added by this tool.
                 tbItem.SetData(ToolboxDataSourceId, true);
+
+                // Set label here so easy to read back and use in logging when removing.
+                tbItem.SetData(ToolboxDataLabel, label);
 
                 await OutputPane.Instance.WriteAsync($"Adding '{label}' to tab '{tab}'");
 

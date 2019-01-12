@@ -54,15 +54,20 @@ namespace DemoSnippets.Commands
                 if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
                 {
                     var slnDir = Path.GetDirectoryName(fileName);
-                    await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
-                }
 
-                // TODO: handle this differently
-                //if (TrackedSnippets.Any())
-                //{
-                //    var plural = TrackedSnippets.Count > 1 ? "s" : string.Empty;
-                //    await OutputPane.Instance.WriteAsync($"Added {TrackedSnippets.Count} snippet{plural} to Toolbox.");
-                //}
+#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
+                    var (fileCount, snippetCount) = await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
+#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
+
+                    var filePlural = fileCount == 1 ? string.Empty : "s";
+                    var snippetPlural = snippetCount == 1 ? string.Empty : "s";
+
+                    await OutputPane.Instance.WriteAsync($"Added {snippetCount} snippet{snippetPlural}, from {fileCount} file{filePlural} to the Toolbox.");
+                }
+                else
+                {
+                    await OutputPane.Instance.WriteAsync("Could not access solution file to use to find .demosnippets files.");
+                }
             }
         }
     }

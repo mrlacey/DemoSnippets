@@ -145,7 +145,12 @@ namespace DemoSnippets.Commands
 
         private async void Execute(object sender, EventArgs e)
         {
-            await ToolboxInteractionLogic.LoadToolboxItemsAsync(this.SelectedFileName);
+            await OutputPane.Instance.WriteAsync($"Adding snippets from '{this.SelectedFileName}' to the Toolbox.");
+            var itemCount = await ToolboxInteractionLogic.LoadToolboxItemsAsync(this.SelectedFileName);
+
+            var plural = itemCount == 1 ? string.Empty : "s";
+
+            await OutputPane.Instance.WriteAsync($"Added {itemCount} snippet{plural} to the Toolbox.");
         }
     }
 }
