@@ -1,4 +1,4 @@
-﻿// <copyright file="AddToToolboxPackage.cs" company="Matt Lacey Ltd.">
+﻿// <copyright file="DemoSnippetsPackage.cs" company="Matt Lacey Ltd.">
 // Copyright (c) Matt Lacey Ltd. All rights reserved.
 // </copyright>
 
@@ -23,13 +23,13 @@ namespace DemoSnippets
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.1", IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(AddToToolboxPackage.PackageGuidString)]
+    [Guid(DemoSnippetsPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-    public sealed class AddToToolboxPackage : AsyncPackage
+    public sealed class DemoSnippetsPackage : AsyncPackage
     {
         public const string PackageGuidString = "9538932d-8cd5-4512-adb9-4c6b73adf57c";
 
-        public AddToToolboxPackage()
+        public DemoSnippetsPackage()
         {
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but

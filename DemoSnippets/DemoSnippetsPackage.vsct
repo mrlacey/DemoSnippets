@@ -3,20 +3,20 @@
   <Extern href="stdidcmd.h" />
   <Extern href="vsshlids.h" />
 
-  <Commands package="guidAddToToolboxPackage">
+  <Commands package="guidDemoSnippetsPackage">
 
     <Groups>
-      <Group guid="guidAddToToolboxPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+      <Group guid="guidDemoSnippetsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
       </Group>
-      <Group guid="guidAddToToolboxPackageCmdSet" id="MyToolboxMenuGroup" priority="0x0600">
+      <Group guid="guidDemoSnippetsPackageCmdSet" id="MyToolboxMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_TOOLBOX" />
       </Group>
     </Groups>
 
     <Buttons>
-      <Button guid="guidAddToToolboxPackageCmdSet" id="AddToToolboxId" priority="0x0100" type="Button">
-        <Parent guid="guidAddToToolboxPackageCmdSet" id="MyMenuGroup" />
+      <Button guid="guidDemoSnippetsPackageCmdSet" id="AddToToolboxId" priority="0x0100" type="Button">
+        <Parent guid="guidDemoSnippetsPackageCmdSet" id="MyMenuGroup" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
@@ -24,8 +24,8 @@
         </Strings>
       </Button>
 
-      <Button guid="guidAddToToolboxPackageCmdSet" id="RemoveAllDemoSnippetsId" priority="0x0100" type="Button">
-        <Parent guid="guidAddToToolboxPackageCmdSet" id="MyToolboxMenuGroup" />
+      <Button guid="guidDemoSnippetsPackageCmdSet" id="RemoveAllDemoSnippetsId" priority="0x0100" type="Button">
+        <Parent guid="guidDemoSnippetsPackageCmdSet" id="MyToolboxMenuGroup" />
         <Strings>
           <ButtonText>Remove All DemoSnippets</ButtonText>
         </Strings>
@@ -34,9 +34,9 @@
   </Commands>
 
   <Symbols>
-    <GuidSymbol name="guidAddToToolboxPackage" value="{9538932d-8cd5-4512-adb9-4c6b73adf57c}" />
+    <GuidSymbol name="guidDemoSnippetsPackage" value="{9538932d-8cd5-4512-adb9-4c6b73adf57c}" />
 
-    <GuidSymbol name="guidAddToToolboxPackageCmdSet" value="{edc0c9c2-6d4c-4c5c-855f-6d4e670f519d}">
+    <GuidSymbol name="guidDemoSnippetsPackageCmdSet" value="{edc0c9c2-6d4c-4c5c-855f-6d4e670f519d}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="MyToolboxMenuGroup" value="0x1030" />
       <IDSymbol name="AddToToolboxId" value="0x0100" />

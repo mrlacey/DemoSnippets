@@ -57,7 +57,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\AddToToolbox.cs" />
-    <Compile Include="AddToToolboxPackage.cs" />
+    <Compile Include="DemoSnippetsPackage.cs" />
     <Compile Include="DemoSnippetsParser.cs" />
     <Compile Include="OutputPane.cs" />
     <Compile Include="Commands\RemoveAllDemoSnippets.cs" />
@@ -83,7 +83,7 @@
     <AdditionalFiles Include="StyleCop.json" />
   </ItemGroup>
   <ItemGroup>
-    <VSCTCompile Include="AddToToolboxPackage.vsct">
+    <VSCTCompile Include="DemoSnippetsPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
@@ -168,6 +168,7 @@
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <ManifestResourceName>VSPackage</ManifestResourceName>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
