@@ -60,6 +60,9 @@
     <Compile Include="Commands\AddToToolbox.cs" />
     <Compile Include="DemoSnippetsPackage.cs" />
     <Compile Include="DemoSnippetsParser.cs" />
+    <Compile Include="OptionPageGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OutputPane.cs" />
     <Compile Include="Commands\RemoveAllDemoSnippets.cs" />
     <Compile Include="ToolboxEntry.cs" />

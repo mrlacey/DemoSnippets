@@ -3,7 +3,7 @@
 - [x] Allow processing multiple .demosnippets files at once (content menu option on the solution node)
 - [x] Allow removing all snippets from the toolbox (context menu option on the Toolbox)
 - [ ] Automatically load all *.demosnippets files on solution load (and remove on solution close)
-- [ ] Open to suggestions...
+- [ ] (Open to suggestions...)[https://github.com/mrlacey/DemoSnippets/issues/new]
 
 Features that have a checkmark are complete and available for
 download in the
