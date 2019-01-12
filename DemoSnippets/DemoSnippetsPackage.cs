@@ -26,6 +26,7 @@ namespace DemoSnippets
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(DemoSnippetsPackage.PackageGuidString)]
     [ProvideOptionPage(typeof(OptionPageGrid), "DemoSnippets", "General", 0, 0, true)]
+    [ProvideProfileAttribute(typeof(OptionPageGrid), "DemoSnippets", "General", 106, 107, isToolsOptionPage: true, DescriptionResourceID = 108)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     public sealed class DemoSnippetsPackage : AsyncPackage
     {
@@ -33,6 +34,15 @@ namespace DemoSnippets
 
         public DemoSnippetsPackage()
         {
+        }
+
+        public bool IsAutoLoadEnabled
+        {
+            get
+            {
+                var options = (OptionPageGrid)this.GetDialogPage(typeof(OptionPageGrid));
+                return options.AutoLoadUnload;
+            }
         }
 
         /// <summary>
@@ -58,8 +68,6 @@ namespace DemoSnippets
             await RemoveAllDemoSnippets.InitializeAsync(this);
             await AddAllDemoSnippets.InitializeAsync(this);
 
-            // TODO: Make auto-load/unload configurable
-
             // Since this package might not be initialized until after a solution has finished loading,
             // we need to check if a solution has already been loaded and then handle it.
             bool isSolutionLoaded = await this.IsSolutionLoadedAsync(cancellationToken);
@@ -81,10 +89,12 @@ namespace DemoSnippets
 
         private async Task HandleCloseSolutionAsync(CancellationToken cancellationToken)
         {
-            // TODO: make configurable
-            await OutputPane.Instance.WriteAsync("Removing DemoSnippets from the Toolbox as solution has been closed.");
+            if (this.IsAutoLoadEnabled)
+            {
+                await OutputPane.Instance.WriteAsync("Removing DemoSnippets from the Toolbox as solution has been closed.");
 
-            await ToolboxInteractionLogic.RemoveAllDemoSnippetsAsync(cancellationToken);
+                await ToolboxInteractionLogic.RemoveAllDemoSnippetsAsync(cancellationToken);
+            }
         }
 
         private async Task<bool> IsSolutionLoadedAsync(CancellationToken cancellationToken)
@@ -112,28 +122,35 @@ namespace DemoSnippets
         {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            // Get all *.demosnippets files from the solution
-            // Do this now for performance and to avoid thread issues
-            if (await this.GetServiceAsync(typeof(DTE)) is DTE dte)
+            if (this.IsAutoLoadEnabled)
             {
-                var fileName = dte.Solution.FileName;
-
-                if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
+                // Get all *.demosnippets files from the solution
+                // Do this now for performance and to avoid thread issues
+                if (await this.GetServiceAsync(typeof(DTE)) is DTE dte)
                 {
-                    var slnDir = Path.GetDirectoryName(fileName);
-#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
-                    var (fileCount, snippetCount) = await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
-#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
+                    var fileName = dte.Solution.FileName;
 
-                    var filePlural = fileCount == 1 ? string.Empty : "s";
-                    var snippetPlural = snippetCount == 1 ? string.Empty : "s";
+                    if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
+                    {
+                        var slnDir = Path.GetDirectoryName(fileName);
+    #pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
+                        var (fileCount, snippetCount) = await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
+    #pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
 
-                    await OutputPane.Instance.WriteAsync($"Added {snippetCount} snippet{snippetPlural}, from {fileCount} file{filePlural} to the Toolbox.");
+                        var filePlural = fileCount == 1 ? string.Empty : "s";
+                        var snippetPlural = snippetCount == 1 ? string.Empty : "s";
+
+                        await OutputPane.Instance.WriteAsync($"Added {snippetCount} snippet{snippetPlural}, from {fileCount} file{filePlural}.");
+                    }
+                    else
+                    {
+                        await OutputPane.Instance.WriteAsync("Could not access solution file to use to find .demosnippets files.");
+                    }
                 }
-                else
-                {
-                    await OutputPane.Instance.WriteAsync("Could not access solution file to use to find .demosnippets files.");
-                }
+            }
+            else
+            {
+                await OutputPane.Instance.WriteAsync("Automatic loading of .demosnippets files has been disabled.");
             }
         }
     }
