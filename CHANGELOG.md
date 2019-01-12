@@ -1,6 +1,8 @@
 # Road map
 
-- [ ] Allow processing multiple .demosnipptes files at once
+- [x] Allow processing multiple .demosnippets files at once (content menu option on the solution node)
+- [x] Allow removing all snippets from the toolbox (context menu option on the Toolbox)
+- [ ] Automatically load all *.demosnippets files on solution load (and remove on solution close)
 - [ ] Open to suggestions...
 
 Features that have a checkmark are complete and available for
@@ -11,6 +13,7 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
 
 ## 1.1
 
