@@ -36,7 +36,7 @@
       <Button guid="guidDemoSnippetsPackageCmdSet" id="AddAllDemoSnippetsId" priority="0x0100" type="Button">
         <Parent guid="guidDemoSnippetsPackageCmdSet" id="MySolutionMenuGroup" />
         <Strings>
-          <ButtonText>Add all DemoSnippets to Toolbox</ButtonText>
+          <ButtonText>Add All DemoSnippets to Toolbox</ButtonText>
         </Strings>
       </Button>
     </Buttons>
