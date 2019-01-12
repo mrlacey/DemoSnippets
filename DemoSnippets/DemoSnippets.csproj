@@ -61,6 +61,7 @@
     <Compile Include="ToolboxEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskExtensions.cs" />
+    <Compile Include="ToolboxInteractionLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\LICENSE">

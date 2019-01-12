@@ -48,6 +48,7 @@ namespace DemoSnippets
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
+            await ToolboxInteractionLogic.InitializeAsync(this);
             await AddToToolbox.InitializeAsync(this);
 
             // Since this package might not be initialized until after a solution has finished loading,
@@ -76,11 +77,17 @@ namespace DemoSnippets
 
             foreach (var toTryAndRemove in snippetsToTryAndRemove)
             {
-                await AddToToolbox.RemoveFromToolboxAsync(toTryAndRemove);
+                await ToolboxInteractionLogic.RemoveFromToolboxAsync(toTryAndRemove);
                 TrackedSnippets.Remove(toTryAndRemove);
             }
 
             // TODO: Also need to remove empty tabs
+            var tabsToTryAndRemove = snippetsToTryAndRemove.Select(s => s.Tab).Distinct().ToList();
+
+            foreach (var tab in tabsToTryAndRemove)
+            {
+                
+            }
         }
 
         private async Task<bool> IsSolutionLoadedAsync(CancellationToken cancellationToken)
@@ -135,7 +142,7 @@ namespace DemoSnippets
             foreach (var snippetFile in allSnippetFiles)
             {
                 await OutputPane.Instance.WriteAsync($"Loading items from: {snippetFile}");
-                await AddToToolbox.LoadToolboxItemsAsync(snippetFile, i => TrackedSnippets.Add(i));
+                await ToolboxInteractionLogic.LoadToolboxItemsAsync(snippetFile, i => TrackedSnippets.Add(i));
             }
         }
     }
