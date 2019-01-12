@@ -62,7 +62,7 @@ namespace DemoSnippets.Commands
                     var filePlural = fileCount == 1 ? string.Empty : "s";
                     var snippetPlural = snippetCount == 1 ? string.Empty : "s";
 
-                    await OutputPane.Instance.WriteAsync($"Added {snippetCount} snippet{snippetPlural}, from {fileCount} file{filePlural} to the Toolbox.");
+                    await OutputPane.Instance.WriteAsync($"Added {snippetCount} snippet{snippetPlural}, from {fileCount} file{filePlural}.");
                 }
                 else
                 {
