@@ -342,7 +342,7 @@ namespace DemoSnippets.Tests
             Assert.AreEqual("Demo 2", actual[1].Tab);
         }
 
-        private List<ItemToAdd> ParseAsLines(string lines)
+        private List<ToolboxEntry> ParseAsLines(string lines)
         {
             var sut = new DemoSnippetsParser();
             return sut.GetItemsToAdd(lines.Split(new[] { Environment.NewLine }, StringSplitOptions.None));

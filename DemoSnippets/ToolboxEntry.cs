@@ -1,8 +1,8 @@
 ﻿namespace DemoSnippets
 {
-    public class ItemToAdd
+    public class ToolboxEntry
     {
-        public ItemToAdd()
+        public ToolboxEntry()
         {
             this.Label = string.Empty;
             this.Snippet = string.Empty;

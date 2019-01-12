@@ -1,37 +1,19 @@
 ﻿using System;
-using System.ComponentModel.Design;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using EnvDTE;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.Win32;
 using Task = System.Threading.Tasks.Task;
 
 namespace DemoSnippets
 {
-    /// <summary>
-    /// This is the class that implements the package exposed by this assembly.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// The minimum requirement for a class to be considered a valid package for Visual Studio
-    /// is to implement the IVsPackage interface and register itself with the shell.
-    /// This package uses the helper classes defined inside the Managed Package Framework (MPF)
-    /// to do it: it derives from the Package class that provides the implementation of the
-    /// IVsPackage interface and uses the registration attributes defined in the framework to
-    /// register itself and its components with the shell. These attributes tell the pkgdef creation
-    /// utility what data to put into .pkgdef file.
-    /// </para>
-    /// <para>
-    /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
-    /// </para>
-    /// </remarks>
     [ProvideAutoLoad(Microsoft.VisualStudio.Shell.Interop.UIContextGuids.SolutionHasMultipleProjects, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(Microsoft.VisualStudio.Shell.Interop.UIContextGuids.SolutionHasSingleProject, PackageAutoLoadFlags.BackgroundLoad)]
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
@@ -41,14 +23,8 @@ namespace DemoSnippets
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     public sealed class AddToToolboxPackage : AsyncPackage
     {
-        /// <summary>
-        /// AddToToolboxPackage GUID string.
-        /// </summary>
         public const string PackageGuidString = "9538932d-8cd5-4512-adb9-4c6b73adf57c";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddToToolboxPackage"/> class.
-        /// </summary>
         public AddToToolboxPackage()
         {
             // Inside this method you can place any initialization code that does not require
@@ -57,7 +33,7 @@ namespace DemoSnippets
             // initialization is the Initialize method.
         }
 
-        #region Package Members
+        private static List<ToolboxEntry> TrackedSnippets { get; set; } = new List<ToolboxEntry>();
 
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
@@ -71,9 +47,96 @@ namespace DemoSnippets
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
             await AddToToolbox.InitializeAsync(this);
+
+            // Since this package might not be initialized until after a solution has finished loading,
+            // we need to check if a solution has already been loaded and then handle it.
+            bool isSolutionLoaded = await this.IsSolutionLoadedAsync(cancellationToken);
+
+            if (isSolutionLoaded)
+            {
+                await this.HandleOpenSolutionAsync(cancellationToken);
+            }
+
+            // TODO: Make auto-load/unload configurable
+            // Listen for subsequent solution events
+            Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenSolution += this.HandleOpenSolution;
+            Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterCloseSolution += this.HandleCloseSolution;
         }
 
-        #endregion
+        private void HandleCloseSolution(object sender, EventArgs e)
+        {
+            this.JoinableTaskFactory.RunAsync(() => this.HandleCloseSolutionAsync(this.DisposalToken)).Task.LogAndForget("DemoSnippets");
+        }
+
+        private async Task HandleCloseSolutionAsync(CancellationToken cancellationToken)
+        {
+            var snippetsToTryAndRemove = new List<ToolboxEntry>(TrackedSnippets);
+
+            foreach (var toTryAndRemove in snippetsToTryAndRemove)
+            {
+                await AddToToolbox.RemoveFromToolboxAsync(toTryAndRemove);
+                TrackedSnippets.Remove(toTryAndRemove);
+            }
+
+            // TODO: Also need to remove empty tabs
+        }
+
+        private async Task<bool> IsSolutionLoadedAsync(CancellationToken cancellationToken)
+        {
+            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+            if (!(await this.GetServiceAsync(typeof(SVsSolution)) is IVsSolution solService))
+            {
+                throw new ArgumentNullException(nameof(solService));
+            }
+
+            ErrorHandler.ThrowOnFailure(solService.GetProperty((int)__VSPROPID.VSPROPID_IsSolutionOpen, out object value));
+
+            return value is bool isSolOpen && isSolOpen;
+        }
+
+        private void HandleOpenSolution(object sender, EventArgs e)
+        {
+            this.JoinableTaskFactory.RunAsync(() => this.HandleOpenSolutionAsync(this.DisposalToken)).Task.LogAndForget("DemoSnippets");
+        }
+
+        private async Task HandleOpenSolutionAsync(CancellationToken cancellationToken)
+        {
+            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+            // Get all *.demosnippets files from the solution
+            // Do this now for performance and to avoid thread issues
+            if (await this.GetServiceAsync(typeof(DTE)) is DTE dte)
+            {
+                var fileName = dte.Solution.FileName;
+
+                if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
+                {
+                    var slnDir = Path.GetDirectoryName(fileName);
+                    await this.ProcessAllSnippetFilesAsync(slnDir);
+                }
+
+                if (TrackedSnippets.Any())
+                {
+                    var plural = TrackedSnippets.Count > 1 ? "s" : string.Empty;
+                    await OutputPane.Instance.WriteAsync($"Added {TrackedSnippets.Count} snippet{plural} to Toolbox.");
+                }
+            }
+        }
+
+        private async Task ProcessAllSnippetFilesAsync(string slnDirectory)
+        {
+            await OutputPane.Instance.WriteAsync($"Loading *.demosnippets files under: {slnDirectory}");
+
+            var allSnippetFiles = Directory.EnumerateFiles(slnDirectory, "*.demosnippets", SearchOption.AllDirectories);
+
+            foreach (var snippetFile in allSnippetFiles)
+            {
+                await OutputPane.Instance.WriteAsync($"Loading items from: {snippetFile}");
+                await AddToToolbox.LoadToolboxItemsAsync(snippetFile, i => TrackedSnippets.Add(i));
+            }
+        }
     }
 }

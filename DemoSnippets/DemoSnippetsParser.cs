@@ -8,11 +8,11 @@ namespace DemoSnippets
 {
     public class DemoSnippetsParser
     {
-        public List<ItemToAdd> GetItemsToAdd(string[] lines)
+        public List<ToolboxEntry> GetItemsToAdd(string[] lines)
         {
-            var result = new List<ItemToAdd>();
+            var result = new List<ToolboxEntry>();
 
-            ItemToAdd toAdd = null;
+            ToolboxEntry toAdd = null;
 
             for (int i = 0; i < lines.Length; i++)
             {
@@ -28,7 +28,7 @@ namespace DemoSnippets
                 {
                     if (toAdd == null)
                     {
-                        toAdd = new ItemToAdd();
+                        toAdd = new ToolboxEntry();
                     }
 
                     if (!string.IsNullOrWhiteSpace(toAdd.Snippet))
@@ -37,7 +37,7 @@ namespace DemoSnippets
 
                         result.Add(toAdd);
 
-                        toAdd = new ItemToAdd();
+                        toAdd = new ToolboxEntry();
                     }
 
                     toAdd.Tab = line.Substring(4).Trim();
@@ -49,7 +49,7 @@ namespace DemoSnippets
                 {
                     if (toAdd == null)
                     {
-                        toAdd = new ItemToAdd { Label = line.Substring(1).Trim() };
+                        toAdd = new ToolboxEntry { Label = line.Substring(1).Trim() };
                     }
                     else
                     {
@@ -65,7 +65,7 @@ namespace DemoSnippets
 
                             var currentTab = toAdd.Tab;
 
-                            toAdd = new ItemToAdd { Label = line.Substring(1).Trim(), Tab = currentTab };
+                            toAdd = new ToolboxEntry { Label = line.Substring(1).Trim(), Tab = currentTab };
                         }
                     }
                 }
@@ -75,7 +75,7 @@ namespace DemoSnippets
                     {
                         if (string.IsNullOrWhiteSpace(toAdd.Label))
                         {
-                            toAdd.Label = line;
+                            toAdd.Label = line.Trim();
                         }
 
                         if (string.IsNullOrWhiteSpace(toAdd.Snippet))

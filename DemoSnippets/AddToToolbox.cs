@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using IDataObject = Microsoft.VisualStudio.OLE.Interop.IDataObject;
 using Task = System.Threading.Tasks.Task;
 
 namespace DemoSnippets
@@ -55,71 +56,50 @@ namespace DemoSnippets
 
         private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
         {
-                ThreadHelper.ThrowIfNotOnUIThread();
+            ThreadHelper.ThrowIfNotOnUIThread();
 
-                if (sender is OleMenuCommand menuCmd)
-                {
-                    menuCmd.Visible = menuCmd.Enabled = false;
-
-                    if (!this.IsSingleProjectItemSelection(out var hierarchy, out var itemid))
-                    {
-                        this.SelectedFileName = null;
-                        return;
-                    }
-
-                    ((IVsProject)hierarchy).GetMkDocument(itemid, out var itemFullPath);
-                    var transformFileInfo = new FileInfo(itemFullPath);
-
-                    // Save the name of the selected file so we have it when the command is executed
-                    this.SelectedFileName = transformFileInfo.FullName;
-
-                    if (transformFileInfo.Name.ToLowerInvariant().EndsWith(".demosnippets"))
-                    {
-                        menuCmd.Visible = menuCmd.Enabled = true;
-                    }
-                }
-        }
-
-        /// <summary>
-        /// Gets the instance of the command.
-        /// </summary>
-        public static AddToToolbox Instance
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the service provider from the owner package.
-        /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
-        {
-            get
+            if (sender is OleMenuCommand menuCmd)
             {
-                return this.package;
+                menuCmd.Visible = menuCmd.Enabled = false;
+
+                if (!this.IsSingleProjectItemSelection(out var hierarchy, out var itemid))
+                {
+                    this.SelectedFileName = null;
+                    return;
+                }
+
+                ((IVsProject)hierarchy).GetMkDocument(itemid, out var itemFullPath);
+                var transformFileInfo = new FileInfo(itemFullPath);
+
+                // Save the name of the selected file so we have it when the command is executed
+                this.SelectedFileName = transformFileInfo.FullName;
+
+                if (transformFileInfo.Name.ToLowerInvariant().EndsWith(".demosnippets"))
+                {
+                    menuCmd.Visible = menuCmd.Enabled = true;
+                }
             }
         }
 
-        /// <summary>
-        /// Initializes the singleton instance of the command.
-        /// </summary>
-        /// <param name="package">Owner package, not null.</param>
+        public static AddToToolbox Instance { get; private set; }
+
+        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
+
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in AddToToolbox's constructor requires
-            // the UI thread.
+            // Switch to the main thread - the call to AddCommand in AddToToolbox's constructor requires the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
-            OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
+            var commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
             Instance = new AddToToolbox(package, commandService);
         }
 
-        private bool IsSingleProjectItemSelection(out IVsHierarchy hierarchy, out uint itemid)
+        private bool IsSingleProjectItemSelection(out IVsHierarchy hierarchy, out uint itemId)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             hierarchy = null;
-            itemid = VSConstants.VSITEMID_NIL;
+            itemId = VSConstants.VSITEMID_NIL;
 
             var solution = Package.GetGlobalService(typeof(SVsSolution)) as IVsSolution;
             if (!(Package.GetGlobalService(typeof(SVsShellMonitorSelection)) is IVsMonitorSelection monitorSelection) || solution == null)
@@ -132,9 +112,9 @@ namespace DemoSnippets
 
             try
             {
-                var hr = monitorSelection.GetCurrentSelection(out hierarchyPtr, out itemid, out var multiItemSelect, out selectionContainerPtr);
+                var hr = monitorSelection.GetCurrentSelection(out hierarchyPtr, out itemId, out var multiItemSelect, out selectionContainerPtr);
 
-                if (ErrorHandler.Failed(hr) || hierarchyPtr == IntPtr.Zero || itemid == VSConstants.VSITEMID_NIL)
+                if (ErrorHandler.Failed(hr) || hierarchyPtr == IntPtr.Zero || itemId == VSConstants.VSITEMID_NIL)
                 {
                     // there is no selection
                     return false;
@@ -146,7 +126,7 @@ namespace DemoSnippets
                     return false;
                 }
 
-                if (itemid == VSConstants.VSITEMID_ROOT)
+                if (itemId == VSConstants.VSITEMID_ROOT)
                 {
                     // there is a hierarchy root node selected, thus it is not a single item inside a project
                     return false;
@@ -181,52 +161,105 @@ namespace DemoSnippets
             }
         }
 
-
-        /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
         private async void Execute(object sender, EventArgs e)
         {
-            var lines = File.ReadAllLines(this.SelectedFileName);
+            await LoadToolboxItemsAsync(this.SelectedFileName);
+        }
+
+        public static async Task LoadToolboxItemsAsync(string fileName, Action<ToolboxEntry> alsoWithEachItem = null)
+        {
+            var lines = File.ReadAllLines(fileName);
 
             var dsp = new DemoSnippetsParser();
             var toAdd = dsp.GetItemsToAdd(lines);
 
             foreach (var item in toAdd)
             {
-                await AddToToolboxAsync(item.Tab, item.Label, item.Snippet);
+                if (string.IsNullOrWhiteSpace(item.Tab))
+                {
+                    item.Tab = "Demo";
+                }
+
+                var obj = await AddToToolboxAsync(item.Tab, item.Label, item.Snippet);
+
+                alsoWithEachItem?.Invoke(item);
             }
         }
 
-        private static async Task AddToToolboxAsync(string tab, string label, string actualText)
+        public static async Task RemoveFromToolboxAsync(ToolboxEntry item)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
 
-            var tbs = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
-
-            var itemInfo = new TBXITEMINFO[1];
-            var tbItem = new OleDataObject();
-
-            var executionPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            itemInfo[0].bstrText = label;
-            itemInfo[0].dwFlags = (uint)__TBXITEMINFOFLAGS.TBXIF_DONTPERSIST;
-
-            tbItem.SetText(actualText, TextDataFormat.Text);
-
-            var tabLabel = "Demo"; // Default value
-
-            if (!string.IsNullOrWhiteSpace(tab))
+            try
             {
-                tabLabel = tab.Trim();
-            }
+                var toolbox = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
 
-            tbs?.AddItem(tbItem, itemInfo, tabLabel);
+                await OutputPane.Instance.WriteAsync($"Removing '{item.Label}' from tab '{item.Tab}'");
+
+                IEnumToolboxItems tbItems = null;
+
+                toolbox?.EnumItems(item.Tab, out tbItems);
+
+                var dataObjects = new IDataObject[1];
+                uint fetched = 0;
+
+                bool found = false;
+
+                while (!found && tbItems?.Next(1, dataObjects, out fetched) == VSConstants.S_OK)
+                {
+                    if (dataObjects[0] != null && fetched == 1)
+                    {
+                        var itemDataObject = new OleDataObject(dataObjects[0]);
+
+                        if (itemDataObject.ContainsText(TextDataFormat.Text))
+                        {
+                            var name = itemDataObject.GetText(TextDataFormat.Text);
+
+                            if (name.ToString() == item.Snippet)
+                            {
+                                toolbox?.RemoveItem(dataObjects[0]);
+                                found = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await OutputPane.Instance.WriteAsync($"Error: {e.Message}{Environment.NewLine}{e.Source}{Environment.NewLine}{e.StackTrace}");
+            }
         }
 
+        private static async Task<IDataObject> AddToToolboxAsync(string tab, string label, string actualText)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
+
+            try
+            {
+                var toolbox = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
+
+                var itemInfo = new TBXITEMINFO[1];
+                var tbItem = new OleDataObject();
+
+                var executionPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+                itemInfo[0].bstrText = label;
+                itemInfo[0].dwFlags = (uint)__TBXITEMINFOFLAGS.TBXIF_DONTPERSIST;
+
+                tbItem.SetText(actualText, TextDataFormat.Text);
+
+                await OutputPane.Instance.WriteAsync($"Adding '{label}' to tab '{tab}'");
+
+                // TODO: avoid adding duplicate items
+                toolbox?.AddItem(tbItem, itemInfo, tab);
+
+                return tbItem;
+            }
+            catch (Exception e)
+            {
+                await OutputPane.Instance.WriteAsync($"Error: {e.Message}{Environment.NewLine}{e.Source}{Environment.NewLine}{e.StackTrace}");
+                return null;
+            }
+        }
     }
 }
