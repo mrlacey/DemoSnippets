@@ -4,17 +4,12 @@
 
 using System;
 using System.ComponentModel.Design;
-using System.Globalization;
 using System.Threading;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace DemoSnippets
+namespace DemoSnippets.Commands
 {
-    /// <summary>
-    /// Command handler
-    /// </summary>
     internal sealed class RemoveAllDemoSnippets
     {
         public const int CommandId = 0x0200;

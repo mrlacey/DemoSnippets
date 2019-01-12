@@ -56,6 +56,7 @@
     <CodeAnalysisRuleSet>DemoSnippets.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddAllDemoSnippets.cs" />
     <Compile Include="Commands\AddToToolbox.cs" />
     <Compile Include="DemoSnippetsPackage.cs" />
     <Compile Include="DemoSnippetsParser.cs" />

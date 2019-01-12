@@ -6,17 +6,20 @@
   <Commands package="guidDemoSnippetsPackage">
 
     <Groups>
-      <Group guid="guidDemoSnippetsPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+      <Group guid="guidDemoSnippetsPackageCmdSet" id="MyItemMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
       </Group>
       <Group guid="guidDemoSnippetsPackageCmdSet" id="MyToolboxMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_TOOLBOX" />
       </Group>
+      <Group guid="guidDemoSnippetsPackageCmdSet" id="MySolutionMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_SOLNNODE" />
+      </Group>
     </Groups>
 
     <Buttons>
       <Button guid="guidDemoSnippetsPackageCmdSet" id="AddToToolboxId" priority="0x0100" type="Button">
-        <Parent guid="guidDemoSnippetsPackageCmdSet" id="MyMenuGroup" />
+        <Parent guid="guidDemoSnippetsPackageCmdSet" id="MyItemMenuGroup" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
@@ -30,6 +33,12 @@
           <ButtonText>Remove All DemoSnippets</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidDemoSnippetsPackageCmdSet" id="AddAllDemoSnippetsId" priority="0x0100" type="Button">
+        <Parent guid="guidDemoSnippetsPackageCmdSet" id="MySolutionMenuGroup" />
+        <Strings>
+          <ButtonText>Add all DemoSnippets to Toolbox</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
 
@@ -37,10 +46,12 @@
     <GuidSymbol name="guidDemoSnippetsPackage" value="{9538932d-8cd5-4512-adb9-4c6b73adf57c}" />
 
     <GuidSymbol name="guidDemoSnippetsPackageCmdSet" value="{edc0c9c2-6d4c-4c5c-855f-6d4e670f519d}">
-      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="MyItemMenuGroup" value="0x1020" />
       <IDSymbol name="MyToolboxMenuGroup" value="0x1030" />
+      <IDSymbol name="MySolutionMenuGroup" value="0x1040" />
       <IDSymbol name="AddToToolboxId" value="0x0100" />
       <IDSymbol name="RemoveAllDemoSnippetsId" value="0x0200" />
+      <IDSymbol name="AddAllDemoSnippetsId" value="0x0300" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using DemoSnippets.Commands;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -31,10 +32,6 @@ namespace DemoSnippets
 
         public DemoSnippetsPackage()
         {
-            // Inside this method you can place any initialization code that does not require
-            // any Visual Studio service because at this point the package object is created but
-            // not sited yet inside Visual Studio environment. The place to do all the other
-            // initialization is the Initialize method.
         }
 
         private static List<ToolboxEntry> TrackedSnippets { get; set; } = new List<ToolboxEntry>();
@@ -54,6 +51,8 @@ namespace DemoSnippets
 
             await ToolboxInteractionLogic.InitializeAsync(this);
             await AddToToolbox.InitializeAsync(this);
+            await RemoveAllDemoSnippets.InitializeAsync(this);
+            await AddAllDemoSnippets.InitializeAsync(this);
 
             // Since this package might not be initialized until after a solution has finished loading,
             // we need to check if a solution has already been loaded and then handle it.
@@ -68,7 +67,6 @@ namespace DemoSnippets
             // Listen for subsequent solution events
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenSolution += this.HandleOpenSolution;
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterCloseSolution += this.HandleCloseSolution;
-            await RemoveAllDemoSnippets.InitializeAsync(this);
         }
 
         private void HandleCloseSolution(object sender, EventArgs e)
@@ -128,7 +126,7 @@ namespace DemoSnippets
                 if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
                 {
                     var slnDir = Path.GetDirectoryName(fileName);
-                    await this.ProcessAllSnippetFilesAsync(slnDir);
+                    await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
                 }
 
                 if (TrackedSnippets.Any())
@@ -136,19 +134,6 @@ namespace DemoSnippets
                     var plural = TrackedSnippets.Count > 1 ? "s" : string.Empty;
                     await OutputPane.Instance.WriteAsync($"Added {TrackedSnippets.Count} snippet{plural} to Toolbox.");
                 }
-            }
-        }
-
-        private async Task ProcessAllSnippetFilesAsync(string slnDirectory)
-        {
-            await OutputPane.Instance.WriteAsync($"Loading *.demosnippets files under: {slnDirectory}");
-
-            var allSnippetFiles = Directory.EnumerateFiles(slnDirectory, "*.demosnippets", SearchOption.AllDirectories);
-
-            foreach (var snippetFile in allSnippetFiles)
-            {
-                await OutputPane.Instance.WriteAsync($"Loading items from: {snippetFile}");
-                await ToolboxInteractionLogic.LoadToolboxItemsAsync(snippetFile, i => TrackedSnippets.Add(i));
             }
         }
     }

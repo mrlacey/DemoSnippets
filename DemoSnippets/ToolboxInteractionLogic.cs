@@ -203,6 +203,20 @@ namespace DemoSnippets
             }
         }
 
+        // TODO : have this return number of files and snippets added
+        public static async Task ProcessAllSnippetFilesAsync(string slnDirectory)
+        {
+            await OutputPane.Instance.WriteAsync($"Loading *.demosnippets files under: {slnDirectory}");
+
+            var allSnippetFiles = Directory.EnumerateFiles(slnDirectory, "*.demosnippets", SearchOption.AllDirectories);
+
+            foreach (var snippetFile in allSnippetFiles)
+            {
+                await OutputPane.Instance.WriteAsync($"Loading items from: {snippetFile}");
+                await LoadToolboxItemsAsync(snippetFile);
+            }
+        }
+
         private static async Task<IDataObject> AddToToolboxAsync(string tab, string label, string actualText)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
@@ -214,6 +228,7 @@ namespace DemoSnippets
                 var itemInfo = new TBXITEMINFO[1];
                 var tbItem = new OleDataObject();
 
+                // TODO: see if can remove this
                 var executionPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
                 itemInfo[0].bstrText = label;
