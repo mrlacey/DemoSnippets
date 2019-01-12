@@ -85,7 +85,6 @@ namespace DemoSnippets
                 TrackedSnippets.Remove(toTryAndRemove);
             }
 
-            // TODO: Also need to remove empty tabs
             var tabsToTryAndRemove = snippetsToTryAndRemove.Select(s => s.Tab).Distinct().ToList();
 
             foreach (var tab in tabsToTryAndRemove)

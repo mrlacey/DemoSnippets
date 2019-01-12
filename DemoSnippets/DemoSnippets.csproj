@@ -59,7 +59,7 @@
     <Compile Include="AddToToolbox.cs" />
     <Compile Include="AddToToolboxPackage.cs" />
     <Compile Include="DemoSnippetsParser.cs" />
-    <Compile Include="GeneralOutputPane.cs" />
+    <Compile Include="OutputPane.cs" />
     <Compile Include="ToolboxEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskExtensions.cs" />

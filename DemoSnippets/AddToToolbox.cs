@@ -32,9 +32,9 @@ namespace DemoSnippets
             commandService.AddCommand(menuItem);
         }
 
-        private string SelectedFileName { get; set; }
-
         public static AddToToolbox Instance { get; private set; }
+
+        private string SelectedFileName { get; set; }
 
         private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
 
@@ -82,7 +82,9 @@ namespace DemoSnippets
             itemId = VSConstants.VSITEMID_NIL;
 
             var solution = Package.GetGlobalService(typeof(SVsSolution)) as IVsSolution;
+#pragma warning disable SA1119 // Statement must not use unnecessary parenthesis
             if (!(Package.GetGlobalService(typeof(SVsShellMonitorSelection)) is IVsMonitorSelection monitorSelection) || solution == null)
+#pragma warning restore SA1119 // Statement must not use unnecessary parenthesis
             {
                 return false;
             }

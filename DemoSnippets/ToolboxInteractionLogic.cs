@@ -65,9 +65,9 @@ namespace DemoSnippets
 
             try
             {
-                var toolbox = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
-
                 await OutputPane.Instance.WriteAsync($"Removing '{item.Label}' from tab '{item.Tab}'");
+
+                var toolbox = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
 
                 IEnumToolboxItems tbItems = null;
 
@@ -107,7 +107,36 @@ namespace DemoSnippets
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            // TODO: Implement
+            try
+            {
+                var toolbox = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
+                if (toolbox != null)
+                {
+                    IEnumToolboxItems tbItems = null;
+
+                    toolbox?.EnumItems(tab, out tbItems);
+
+                    var dataObjects = new IDataObject[1];
+                    uint fetched = 0;
+
+                    var item = tbItems?.Next(1, dataObjects, out fetched); // == VSConstants.S_OK)
+
+                    if (fetched == 0)
+                    {
+                        await OutputPane.Instance.WriteAsync($"Removing tab '{tab}'");
+
+                        toolbox.RemoveTab(tab);
+                    }
+                }
+                else
+                {
+                    await OutputPane.Instance.WriteAsync("Failed to access Toolbox.");
+                }
+            }
+            catch (Exception e)
+            {
+                await OutputPane.Instance.WriteAsync($"Error: {e.Message}{Environment.NewLine}{e.Source}{Environment.NewLine}{e.StackTrace}");
+            }
         }
 
         private static async Task<IDataObject> AddToToolboxAsync(string tab, string label, string actualText)
