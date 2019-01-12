@@ -68,6 +68,7 @@ namespace DemoSnippets
             // Listen for subsequent solution events
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenSolution += this.HandleOpenSolution;
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterCloseSolution += this.HandleCloseSolution;
+            await RemoveAllDemoSnippets.InitializeAsync(this);
         }
 
         private void HandleCloseSolution(object sender, EventArgs e)

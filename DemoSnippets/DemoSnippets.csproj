@@ -56,10 +56,11 @@
     <CodeAnalysisRuleSet>DemoSnippets.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddToToolbox.cs" />
+    <Compile Include="Commands\AddToToolbox.cs" />
     <Compile Include="AddToToolboxPackage.cs" />
     <Compile Include="DemoSnippetsParser.cs" />
     <Compile Include="OutputPane.cs" />
+    <Compile Include="Commands\RemoveAllDemoSnippets.cs" />
     <Compile Include="ToolboxEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskExtensions.cs" />
@@ -141,6 +142,9 @@
       <Version>8.0.50728</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Threading">
+      <Version>15.8.209</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
       <Version>15.8.209</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Utilities">
