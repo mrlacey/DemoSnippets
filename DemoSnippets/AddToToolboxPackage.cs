@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="AddToToolboxPackage.cs" company="Matt Lacey Ltd.">
+// Copyright (c) Matt Lacey Ltd. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -77,7 +81,7 @@ namespace DemoSnippets
 
             foreach (var toTryAndRemove in snippetsToTryAndRemove)
             {
-                await ToolboxInteractionLogic.RemoveFromToolboxAsync(toTryAndRemove);
+                await ToolboxInteractionLogic.RemoveFromToolboxAsync(toTryAndRemove, cancellationToken);
                 TrackedSnippets.Remove(toTryAndRemove);
             }
 
@@ -86,7 +90,7 @@ namespace DemoSnippets
 
             foreach (var tab in tabsToTryAndRemove)
             {
-                
+                await ToolboxInteractionLogic.RemoveTabIfEmptyAsync(tab, cancellationToken);
             }
         }
 
@@ -94,7 +98,9 @@ namespace DemoSnippets
         {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
+#pragma warning disable SA1119 // Statement must not use unnecessary parenthesis
             if (!(await this.GetServiceAsync(typeof(SVsSolution)) is IVsSolution solService))
+#pragma warning restore SA1119 // Statement must not use unnecessary parenthesis
             {
                 throw new ArgumentNullException(nameof(solService));
             }

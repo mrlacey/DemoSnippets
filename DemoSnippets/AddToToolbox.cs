@@ -1,6 +1,9 @@
-﻿using System;
+﻿// <copyright file="AddToToolbox.cs" company="Matt Lacey Ltd.">
+// Copyright (c) Matt Lacey Ltd. All rights reserved.
+// </copyright>
+
+using System;
 using System.ComponentModel.Design;
-using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
@@ -13,12 +16,10 @@ namespace DemoSnippets
     internal sealed class AddToToolbox
     {
         public const int CommandId = 0x0100;
-        
-        public static readonly Guid CommandSet = new Guid("edc0c9c2-6d4c-4c5c-855f-6d4e670f519d");
-        
-        private readonly AsyncPackage package;
 
-        private string SelectedFileName { get; set; }
+        public static readonly Guid CommandSet = new Guid("edc0c9c2-6d4c-4c5c-855f-6d4e670f519d");
+
+        private readonly AsyncPackage package;
 
         private AddToToolbox(AsyncPackage package, OleMenuCommandService commandService)
         {
@@ -29,6 +30,21 @@ namespace DemoSnippets
             var menuItem = new OleMenuCommand(this.Execute, menuCommandId);
             menuItem.BeforeQueryStatus += this.MenuItem_BeforeQueryStatus;
             commandService.AddCommand(menuItem);
+        }
+
+        private string SelectedFileName { get; set; }
+
+        public static AddToToolbox Instance { get; private set; }
+
+        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
+
+        public static async Task InitializeAsync(AsyncPackage package)
+        {
+            // Switch to the main thread - the call to AddCommand in AddToToolbox's constructor requires the UI thread.
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
+
+            var commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
+            Instance = new AddToToolbox(package, commandService);
         }
 
         private void MenuItem_BeforeQueryStatus(object sender, EventArgs e)
@@ -56,19 +72,6 @@ namespace DemoSnippets
                     menuCmd.Visible = menuCmd.Enabled = true;
                 }
             }
-        }
-
-        public static AddToToolbox Instance { get; private set; }
-
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
-
-        public static async Task InitializeAsync(AsyncPackage package)
-        {
-            // Switch to the main thread - the call to AddCommand in AddToToolbox's constructor requires the UI thread.
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
-
-            var commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
-            Instance = new AddToToolbox(package, commandService);
         }
 
         private bool IsSingleProjectItemSelection(out IVsHierarchy hierarchy, out uint itemId)
@@ -142,5 +145,5 @@ namespace DemoSnippets
         {
             await ToolboxInteractionLogic.LoadToolboxItemsAsync(this.SelectedFileName);
         }
-}
+    }
 }

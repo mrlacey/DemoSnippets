@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="ToolboxInteractionLogic.cs" company="Matt Lacey Ltd.">
+// Copyright (c) Matt Lacey Ltd. All rights reserved.
+// </copyright>
+
+using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -55,9 +59,9 @@ namespace DemoSnippets
             }
         }
 
-        public static async Task RemoveFromToolboxAsync(ToolboxEntry item)
+        public static async Task RemoveFromToolboxAsync(ToolboxEntry item, CancellationToken cancellationToken)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             try
             {
@@ -97,6 +101,13 @@ namespace DemoSnippets
             {
                 await OutputPane.Instance.WriteAsync($"Error: {e.Message}{Environment.NewLine}{e.Source}{Environment.NewLine}{e.StackTrace}");
             }
+        }
+
+        public static async Task RemoveTabIfEmptyAsync(string tab, CancellationToken cancellationToken)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+            // TODO: Implement
         }
 
         private static async Task<IDataObject> AddToToolboxAsync(string tab, string label, string actualText)

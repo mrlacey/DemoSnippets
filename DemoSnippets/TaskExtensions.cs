@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="TaskExtensions.cs" company="Matt Lacey Ltd.">
+// Copyright (c) Matt Lacey Ltd. All rights reserved.
+// </copyright>
+
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
@@ -8,7 +12,8 @@ namespace DemoSnippets
     internal static class TaskExtensions
     {
         internal static void LogAndForget(this Task task, string source) =>
-            task.ContinueWith((t, s) => VsShellUtilities.LogError(s as string, t.Exception.ToString()),
+            task.ContinueWith(
+                (t, s) => VsShellUtilities.LogError(s as string, t.Exception?.ToString()),
                 source,
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnFaulted,

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="DemoSnippetsParser.cs" company="Matt Lacey Ltd.">
+// Copyright (c) Matt Lacey Ltd. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
