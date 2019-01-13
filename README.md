@@ -17,8 +17,8 @@ Intended to make it easy to use code snippets in demos.
 ## Features
 
 - Store your code snippets in a file with a **.demosnippets** extension.
-- Automatically add the contents of all .demosnippets files to the Toolbox when solution loads. (Can be disabled in Options.)
-- Automatically remove all demo snippets from the Toolbox when solution is closed. (Can be disabled in Options.)
+- Automatically add the contents of all .demosnippets files to the Toolbox when a solution loads. (Can be disabled in Options.)
+- Automatically remove all demo snippets from the Toolbox when a solution is closed. (Can be disabled in Options.)
 - Add individual files to the Toolbox by right-clicking on the file in Solution Explorer and selecting **'Add to Toolbox'**.
 - Add all files to the Toolbox by right-clicking on the solution in Solution Explorer and selecting **'Add All DemoSnippets to Toolbox'**.
 - Remove all DemoSnippets from the Toolbox by right-clicking on the Toolbox and selecting **'Remove All DemoSnippets'**.

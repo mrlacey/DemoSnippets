@@ -126,6 +126,7 @@ namespace DemoSnippets
 
                     var item = tbItems?.Next(1, dataObjects, out fetched); // == VSConstants.S_OK)
 
+                    // TODO: do not remove the 'General' tab
                     if (fetched == 0)
                     {
                         await OutputPane.Instance.WriteAsync($"Removing tab '{tab}'");
