@@ -1,5 +1,9 @@
 # Road map
 
+- [x] Allow removing of empty tabs from the toolbox (context menu option on the Toolbox)
+- [ ] Do not duplicate existing toolbox entries with values from the smae .demosnipets files
+- [ ] Reload Toolbox entries when .demosnippets files are saved
+- [ ] Add colorization of .demosnippets files
 - [ ] (Open to suggestions...)[https://github.com/mrlacey/DemoSnippets/issues/new]
 
 Features that have a checkmark are complete and available for
