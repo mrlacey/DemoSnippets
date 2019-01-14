@@ -1,20 +1,25 @@
-﻿// <copyright file="AddToToolbox.cs" company="Matt Lacey Ltd.">
+﻿// <copyright file="RefreshThisFileInToolbox.cs" company="Matt Lacey Ltd.">
 // Copyright (c) Matt Lacey Ltd. All rights reserved.
 // </copyright>
 
 using System;
 using System.ComponentModel.Design;
+using System.Globalization;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace DemoSnippets.Commands
 {
-    internal sealed class AddToToolbox : BaseCommand
+    internal sealed class RefreshThisFileInToolbox : BaseCommand
     {
-        public const int CommandId = 0x0100;
+        public const int CommandId = 0x0500;
 
-        private AddToToolbox(AsyncPackage package, OleMenuCommandService commandService)
-        : base(package, commandService)
+        private RefreshThisFileInToolbox(AsyncPackage package, OleMenuCommandService commandService)
+            : base(package, commandService)
         {
             var menuCommandId = new CommandID(CommandSet, CommandId);
             var menuItem = new OleMenuCommand(this.Execute, menuCommandId);
@@ -24,21 +29,16 @@ namespace DemoSnippets.Commands
 
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in AddToToolbox's constructor requires the UI thread.
+            // Switch to the main thread - the call to AddCommand in command's constructor requires the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             var commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new AddToToolbox(package, commandService);
+            Instance = new RefreshThisFileInToolbox(package, commandService);
         }
 
         private async void Execute(object sender, EventArgs e)
         {
-            await OutputPane.Instance.WriteAsync($"Adding snippets from '{this.SelectedFileName}' to the Toolbox.");
-            var itemCount = await ToolboxInteractionLogic.LoadToolboxItemsAsync(this.SelectedFileName);
-
-            var plural = itemCount == 1 ? string.Empty : "s";
-
-            await OutputPane.Instance.WriteAsync($"Added {itemCount} snippet{plural} to the Toolbox.");
+            await ToolboxInteractionLogic.RefreshEntriesFromFileAsync(this.SelectedFileName);
         }
     }
 }

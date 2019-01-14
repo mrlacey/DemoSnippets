@@ -77,6 +77,7 @@ namespace DemoSnippets
             await RemoveAllDemoSnippets.InitializeAsync(this);
             await AddAllDemoSnippets.InitializeAsync(this);
             await RemoveEmptyTabs.InitializeAsync(this);
+            await RefreshThisFileInToolbox.InitializeAsync(this);
 
             await this.SetUpRunningDocumentTableEventsAsync(cancellationToken);
 

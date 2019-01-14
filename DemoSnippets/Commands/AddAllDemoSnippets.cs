@@ -12,27 +12,17 @@ using Task = System.Threading.Tasks.Task;
 
 namespace DemoSnippets.Commands
 {
-    internal sealed class AddAllDemoSnippets
+    internal sealed class AddAllDemoSnippets : BaseCommand
     {
         public const int CommandId = 0x0300;
 
-        public static readonly Guid CommandSet = new Guid("edc0c9c2-6d4c-4c5c-855f-6d4e670f519d");
-
-        private readonly AsyncPackage package;
-
         private AddAllDemoSnippets(AsyncPackage package, OleMenuCommandService commandService)
+            : base(package, commandService)
         {
-            this.package = package ?? throw new ArgumentNullException(nameof(package));
-            commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
-
             var menuCommandId = new CommandID(CommandSet, CommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandId);
             commandService.AddCommand(menuItem);
         }
-
-        public static AddAllDemoSnippets Instance { get; private set; }
-
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider => this.package;
 
         public static async Task InitializeAsync(AsyncPackage package)
         {
@@ -45,9 +35,9 @@ namespace DemoSnippets.Commands
 
         private async void Execute(object sender, EventArgs e)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(this.package.DisposalToken);
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(this.Package.DisposalToken);
 
-            if (await this.package.GetServiceAsync(typeof(DTE)) is DTE dte)
+            if (await this.Package.GetServiceAsync(typeof(DTE)) is DTE dte)
             {
                 var fileName = dte.Solution.FileName;
 

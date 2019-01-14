@@ -15,6 +15,9 @@
       <Group guid="guidDemoSnippetsPackageCmdSet" id="MySolutionMenuGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_SOLNNODE" />
       </Group>
+      <Group guid="guidDemoSnippetsPackageCmdSet" id="MyEditorMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
+      </Group>
     </Groups>
 
     <Buttons>
@@ -45,6 +48,14 @@
           <ButtonText>Remove Empty Tabs</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidDemoSnippetsPackageCmdSet" id="RefreshThisFileInToolboxId" priority="0x0100" type="Button">
+        <Parent guid="guidDemoSnippetsPackageCmdSet" id="MyEditorMenuGroup" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Refresh This File in Toolbox</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
 
@@ -55,10 +66,12 @@
       <IDSymbol name="MyItemMenuGroup" value="0x1020" />
       <IDSymbol name="MyToolboxMenuGroup" value="0x1030" />
       <IDSymbol name="MySolutionMenuGroup" value="0x1040" />
+      <IDSymbol name="MyEditorMenuGroup" value="0x10450" />
       <IDSymbol name="AddToToolboxId" value="0x0100" />
       <IDSymbol name="RemoveAllDemoSnippetsId" value="0x0200" />
       <IDSymbol name="AddAllDemoSnippetsId" value="0x0300" />
       <IDSymbol name="RemoveEmptyTabsId" value="0x0400" />
+      <IDSymbol name="RefreshThisFileInToolboxId" value="0x0500" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

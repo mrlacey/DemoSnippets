@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Commands\AddAllDemoSnippets.cs" />
     <Compile Include="Commands\AddToToolbox.cs" />
+    <Compile Include="Commands\BaseCommand.cs" />
+    <Compile Include="Commands\RefreshThisFileInToolbox.cs" />
     <Compile Include="Commands\RemoveEmptyTabs.cs" />
     <Compile Include="DemoSnippetsPackage.cs" />
     <Compile Include="DemoSnippetsParser.cs" />
