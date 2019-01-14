@@ -2,6 +2,7 @@
 // Copyright (c) Matt Lacey Ltd. All rights reserved.
 // </copyright>
 
+using System.IO;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -37,8 +38,13 @@ namespace DemoSnippets
 
                 var documentPath = documentInfo.Moniker;
 
-                this.package.JoinableTaskFactory.RunAsync(async () =>
-                    await ToolboxInteractionLogic.RefreshEntriesFromFileAsync(documentPath));
+                var extension = Path.GetExtension(documentPath);
+
+                if (extension?.ToLowerInvariant() == ".demosnippets")
+                {
+                    this.package.JoinableTaskFactory.RunAsync(async () =>
+                        await ToolboxInteractionLogic.RefreshEntriesFromFileAsync(documentPath));
+                }
             }
 
             return VSConstants.S_OK;
