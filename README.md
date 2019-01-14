@@ -10,7 +10,7 @@ Supports Visual Studio 2017 & 2019
 
 ---------------------------------------
 
-Visual Studio extension that provides a command for adding the contents of *.demosnippets to the Toolbox.
+Visual Studio extension that provides functionality relating to *.demosnippets files and interacting with the Toolbox.
 Intended to make it easy to use code snippets in demos.
 
 ![screenshot](./art/screenshot.png)
@@ -23,6 +23,8 @@ Intended to make it easy to use code snippets in demos.
 - Add individual files to the Toolbox by right-clicking on the file in Solution Explorer and selecting **'Add to Toolbox'**.
 - Add all files to the Toolbox by right-clicking on the solution in Solution Explorer and selecting **'Add All DemoSnippets to Toolbox'**.
 - Remove all DemoSnippets from the Toolbox by right-clicking on the Toolbox and selecting **'Remove All DemoSnippets'**.
+- Remove any empty tabs from the Toolbox by right-clicking on the Toolbox and selecting **'Remove Empty Tabs'**.
+- Automatically reload Toolbox entries when .demosnippets files are saved. (Can be disabled in Options.)
 
 ### .demosnippets file
 
