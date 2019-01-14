@@ -287,6 +287,12 @@ namespace DemoSnippets
             return result;
         }
 
+        public static async Task RefreshEntriesFromFileAsync(string documentPath)
+        {
+            await RemoveAllItemsFromFileAsync(documentPath);
+            await LoadToolboxItemsAsync(documentPath);
+        }
+
         private static async Task<IDataObject> AddToToolboxAsync(string tab, string label, string actualText, string sourceFileName)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
@@ -392,6 +398,75 @@ namespace DemoSnippets
             }
 
             return false;
+        }
+
+        private static async Task RemoveAllItemsFromFileAsync(string fileName)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
+
+            try
+            {
+                var nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+
+                if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
+                {
+                    var tabsToRemove = new List<string>();
+
+                    IEnumToolboxTabs tbTabs = null;
+                    toolbox?.EnumTabs(out tbTabs);
+                    var returnedTabNames = new string[1];
+
+                    // Check each tab
+                    while (tbTabs?.Next(1, returnedTabNames, out uint tabsReturned) == VSConstants.S_OK)
+                    {
+                        var tabName = returnedTabNames[0];
+
+                        // Check each item in the tab
+                        IEnumToolboxItems tbItems = null;
+
+                        toolbox?.EnumItems(tabName, out tbItems);
+
+                        var dataObjects = new IDataObject[1];
+                        uint fetched = 0;
+
+                        while (tbItems?.Next(1, dataObjects, out fetched) == VSConstants.S_OK)
+                        {
+                            if (dataObjects[0] != null && fetched == 1)
+                            {
+                                var itemDataObject = new OleDataObject(dataObjects[0]);
+
+                                if (itemDataObject.ContainsText(TextDataFormat.Text))
+                                {
+                                    var isDemoSnippet = itemDataObject.GetData(ToolboxDataSourceId);
+
+                                    if (isDemoSnippet != null)
+                                    {
+                                        var dataFileName = itemDataObject.GetData(ToolboxDataFileName).ToString();
+
+                                        if (nameWithoutExtension == dataFileName)
+                                        {
+                                            toolbox?.RemoveItem(dataObjects[0]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var tabToRemove in tabsToRemove.Distinct().ToList())
+                    {
+                        await RemoveTabIfEmptyAsync(tabToRemove, CancellationToken.None);
+                    }
+                }
+                else
+                {
+                    await OutputPane.Instance.WriteAsync("Failed to access Toolbox.");
+                }
+            }
+            catch (Exception e)
+            {
+                await OutputPane.Instance.WriteAsync($"Error: {e.Message}{Environment.NewLine}{e.Source}{Environment.NewLine}{e.StackTrace}");
+            }
         }
     }
 }

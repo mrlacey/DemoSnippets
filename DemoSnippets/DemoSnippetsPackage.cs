@@ -45,6 +45,15 @@ namespace DemoSnippets
             }
         }
 
+        public bool IsFileRefreshEnabled
+        {
+            get
+            {
+                var options = (OptionPageGrid)this.GetDialogPage(typeof(OptionPageGrid));
+                return options.RefreshOnFileSave;
+            }
+        }
+
         /// <summary>
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
         /// where you can put all the initialization code that rely on services provided by VisualStudio.
@@ -69,6 +78,8 @@ namespace DemoSnippets
             await AddAllDemoSnippets.InitializeAsync(this);
             await RemoveEmptyTabs.InitializeAsync(this);
 
+            await this.SetUpRunningDocumentTableEventsAsync(cancellationToken);
+
             // Since this package might not be initialized until after a solution has finished loading,
             // we need to check if a solution has already been loaded and then handle it.
             bool isSolutionLoaded = await this.IsSolutionLoadedAsync(cancellationToken);
@@ -81,6 +92,19 @@ namespace DemoSnippets
             // Listen for subsequent solution events
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenSolution += this.HandleOpenSolution;
             Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterCloseSolution += this.HandleCloseSolution;
+        }
+
+        private async Task SetUpRunningDocumentTableEventsAsync(CancellationToken cancellationToken)
+        {
+            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+            var dte = (DTE)await this.GetServiceAsync(typeof(DTE));
+
+            var runningDocumentTable = new RunningDocumentTable(this);
+
+            var plugin = new DemoSnippetRunningDocTableEvents(this, runningDocumentTable);
+
+            runningDocumentTable.Advise(plugin);
         }
 
         private void HandleCloseSolution(object sender, EventArgs e)
@@ -134,9 +158,9 @@ namespace DemoSnippets
                     if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
                     {
                         var slnDir = Path.GetDirectoryName(fileName);
-    #pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
+#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
                         var (fileCount, snippetCount) = await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
-    #pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
+#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
 
                         var filePlural = fileCount == 1 ? string.Empty : "s";
                         var snippetPlural = snippetCount == 1 ? string.Empty : "s";
