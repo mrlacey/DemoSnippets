@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Commands\AddAllDemoSnippets.cs" />
     <Compile Include="Commands\AddToToolbox.cs" />
+    <Compile Include="Commands\RemoveEmptyTabs.cs" />
     <Compile Include="DemoSnippetsPackage.cs" />
     <Compile Include="DemoSnippetsParser.cs" />
     <Compile Include="OptionPageGrid.cs">

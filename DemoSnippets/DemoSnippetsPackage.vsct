@@ -39,6 +39,12 @@
           <ButtonText>Add All DemoSnippets to Toolbox</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidDemoSnippetsPackageCmdSet" id="RemoveEmptyTabsId" priority="0x0099" type="Button">
+        <Parent guid="guidDemoSnippetsPackageCmdSet" id="MyToolboxMenuGroup" />
+        <Strings>
+          <ButtonText>Remove Empty Tabs</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
 
@@ -52,6 +58,7 @@
       <IDSymbol name="AddToToolboxId" value="0x0100" />
       <IDSymbol name="RemoveAllDemoSnippetsId" value="0x0200" />
       <IDSymbol name="AddAllDemoSnippetsId" value="0x0300" />
+      <IDSymbol name="RemoveEmptyTabsId" value="0x0400" />
     </GuidSymbol>
   </Symbols>
 </CommandTable>

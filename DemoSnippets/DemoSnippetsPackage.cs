@@ -67,6 +67,7 @@ namespace DemoSnippets
             await AddToToolbox.InitializeAsync(this);
             await RemoveAllDemoSnippets.InitializeAsync(this);
             await AddAllDemoSnippets.InitializeAsync(this);
+            await RemoveEmptyTabs.InitializeAsync(this);
 
             // Since this package might not be initialized until after a solution has finished loading,
             // we need to check if a solution has already been loaded and then handle it.

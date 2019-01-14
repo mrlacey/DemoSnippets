@@ -113,40 +113,48 @@ namespace DemoSnippets
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            if (tab.Trim().ToLowerInvariant() == "general")
+            var comparableTabName = tab.Trim().ToLowerInvariant();
+
+            switch (comparableTabName)
             {
-                await OutputPane.Instance.WriteAsync("General tab cannot be removed, even if empty.");
-                return;
-            }
-
-            try
-            {
-                if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
-                {
-                    IEnumToolboxItems tbItems = null;
-
-                    toolbox?.EnumItems(tab, out tbItems);
-
-                    var dataObjects = new IDataObject[1];
-                    uint fetched = 0;
-
-                    var item = tbItems?.Next(1, dataObjects, out fetched); // == VSConstants.S_OK)
-
-                    if (fetched == 0)
+                case "general":
+                    await OutputPane.Instance.WriteAsync("General tab cannot be removed, even if empty.");
+                    return;
+                case "clipboard ring":
+                    await OutputPane.Instance.WriteAsync("Clipboard Ring tab cannot be removed, even if empty.");
+                    return;
+                default:
+                    try
                     {
-                        await OutputPane.Instance.WriteAsync($"Removing tab '{tab}'");
+                        if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
+                        {
+                            IEnumToolboxItems tbItems = null;
 
-                        toolbox.RemoveTab(tab);
+                            toolbox?.EnumItems(tab, out tbItems);
+
+                            var dataObjects = new IDataObject[1];
+                            uint fetched = 0;
+
+                            var item = tbItems?.Next(1, dataObjects, out fetched); // == VSConstants.S_OK)
+
+                            if (fetched == 0)
+                            {
+                                await OutputPane.Instance.WriteAsync($"Removing tab '{tab}'");
+
+                                toolbox.RemoveTab(tab);
+                            }
+                        }
+                        else
+                        {
+                            await OutputPane.Instance.WriteAsync("Failed to access Toolbox.");
+                        }
                     }
-                }
-                else
-                {
-                    await OutputPane.Instance.WriteAsync("Failed to access Toolbox.");
-                }
-            }
-            catch (Exception e)
-            {
-                await OutputPane.Instance.WriteAsync($"Error: {e.Message}{Environment.NewLine}{e.Source}{Environment.NewLine}{e.StackTrace}");
+                    catch (Exception e)
+                    {
+                        await OutputPane.Instance.WriteAsync($"Error: {e.Message}{Environment.NewLine}{e.Source}{Environment.NewLine}{e.StackTrace}");
+                    }
+
+                    break;
             }
         }
 
@@ -246,6 +254,36 @@ namespace DemoSnippets
             }
 
             return (fileCount, itemsCount);
+        }
+
+        public static async Task<IEnumerable<string>> GetAllTabNamesAsync(CancellationToken cancellationToken)
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
+            var result = new List<string>();
+
+            try
+            {
+                if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
+                {
+                    IEnumToolboxTabs tbTabs = null;
+                    toolbox?.EnumTabs(out tbTabs);
+                    var returnedTabNames = new string[1];
+
+                    while (tbTabs?.Next(1, returnedTabNames, out uint tabsReturned) == VSConstants.S_OK)
+                    {
+                        var tabName = returnedTabNames[0];
+
+                        result.Add(tabName);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await OutputPane.Instance.WriteAsync($"Error: {e.Message}{Environment.NewLine}{e.Source}{Environment.NewLine}{e.StackTrace}");
+            }
+
+            return result;
         }
 
         private static async Task<IDataObject> AddToToolboxAsync(string tab, string label, string actualText)
