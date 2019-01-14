@@ -60,7 +60,7 @@ namespace DemoSnippets
 
             await OutputPane.Instance.WriteAsync("The DemoSnippets extension works with .demosnippets files. Learn more at https://github.com/mrlacey/DemoSnippets ");
             await OutputPane.Instance.WriteAsync("If you have problems with this extension, or suggestions for improvement, report them at https://github.com/mrlacey/DemoSnippets/issues/new ");
-            await OutputPane.Instance.WriteAsync("If you like this extension please lease a review at https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets#review-details ");
+            await OutputPane.Instance.WriteAsync("If you like this extension please leave a review at https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets#review-details ");
             await OutputPane.Instance.WriteAsync(string.Empty);
 
             await ToolboxInteractionLogic.InitializeAsync(this);
