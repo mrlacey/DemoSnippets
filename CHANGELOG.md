@@ -1,6 +1,5 @@
 # Road map
 
-- [ ] Fix file save operating on all files
 - [ ] Add colorization of .demosnippets files
 - [ ] Add Item Template for .demosnippets files
 - [ ] (Open to suggestions...)[https://github.com/mrlacey/DemoSnippets/issues/new]
@@ -13,6 +12,10 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+## 1.4
+
+- [x] Fix file save operating on all files
 
 ## 1.3
 
