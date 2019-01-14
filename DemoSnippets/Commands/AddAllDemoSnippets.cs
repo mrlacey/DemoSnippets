@@ -45,7 +45,7 @@ namespace DemoSnippets.Commands
 
         private async void Execute(object sender, EventArgs e)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(this.package.DisposalToken);
 
             if (await this.package.GetServiceAsync(typeof(DTE)) is DTE dte)
             {
