@@ -113,6 +113,12 @@ namespace DemoSnippets
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
+            if (tab.Trim().ToLowerInvariant() == "general")
+            {
+                await OutputPane.Instance.WriteAsync("General tab cannot be removed, even if empty.");
+                return;
+            }
+
             try
             {
                 if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
@@ -126,7 +132,6 @@ namespace DemoSnippets
 
                     var item = tbItems?.Next(1, dataObjects, out fetched); // == VSConstants.S_OK)
 
-                    // TODO: do not remove the 'General' tab
                     if (fetched == 0)
                     {
                         await OutputPane.Instance.WriteAsync($"Removing tab '{tab}'");
