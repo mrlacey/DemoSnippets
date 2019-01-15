@@ -16,6 +16,7 @@ namespace DemoSnippets.Classifier
         [Export]
         [Name(ContentType)]
         [BaseDefinition("code")]
+#pragma warning disable SA1401 // Fields must be private
         internal static ContentTypeDefinition ContentTypeDefinition = null;
 
         [Export]
@@ -23,5 +24,6 @@ namespace DemoSnippets.Classifier
         [ContentType(ContentType)]
         [FileExtension(FileExtension)]
         internal static FileExtensionToContentTypeDefinition FileExtensionToContentTypeDefinition = null;
+#pragma warning restore SA1401 // Fields must be private
     }
 }
