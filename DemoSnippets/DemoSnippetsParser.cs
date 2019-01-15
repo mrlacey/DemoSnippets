@@ -21,14 +21,15 @@ namespace DemoSnippets
             for (int i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
+                var lineType = DemoSnippetsLineTypeIdentifier.GetLineType(line);
 
-                if (line.StartsWith("#"))
+                if (lineType == DemoSnippetsLineType.Comment)
                 {
                     // Ignore comments
                     continue;
                 }
 
-                if (line.ToLowerInvariant().StartsWith("tab:"))
+                if (lineType == DemoSnippetsLineType.Tab)
                 {
                     if (toAdd == null)
                     {
@@ -49,7 +50,7 @@ namespace DemoSnippets
                     continue;
                 }
 
-                if (line.StartsWith("-"))
+                if (lineType == DemoSnippetsLineType.Label)
                 {
                     if (toAdd == null)
                     {
