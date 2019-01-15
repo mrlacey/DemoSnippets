@@ -1,6 +1,6 @@
 # Road map
 
-- [ ] Add colorization of .demosnippets files
+- [X] Add colorization of .demosnippets files
 - [ ] Add Item Template for .demosnippets files
 - [ ] (Open to suggestions...)[https://github.com/mrlacey/DemoSnippets/issues/new]
 
