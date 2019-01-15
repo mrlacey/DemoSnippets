@@ -14,7 +14,7 @@ namespace DemoSnippets.Classifier
         public const string DemoSnippetsTab = "ds_tab";
         public const string DemoSnippetsLabel = "ds_label";
         public const string DemoSnippetsComment = PredefinedClassificationTypeNames.Comment;
-        public const string DemoSnippetsNaturalLanguage = PredefinedClassificationTypeNames.NaturalLanguage;
+        public const string DemoSnippetsOther = PredefinedClassificationTypeNames.Other;
 
         [Export]
         [Name(DemoSnippetsTab)]

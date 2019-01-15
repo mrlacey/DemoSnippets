@@ -11,6 +11,7 @@ namespace DemoSnippets.Classifier
     [Export(typeof(EditorFormatDefinition))]
     [ClassificationType(ClassificationTypeNames = DemoSnippetsClassificationTypes.DemoSnippetsLabel)]
     [Name(DemoSnippetsClassificationTypes.DemoSnippetsLabel)]
+    [UserVisible(true)]
     internal sealed class DemoSnippetsLabelFormatDefinition : ClassificationFormatDefinition
     {
         public DemoSnippetsLabelFormatDefinition()

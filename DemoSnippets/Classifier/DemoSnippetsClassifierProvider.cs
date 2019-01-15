@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;
@@ -10,24 +11,14 @@ using Microsoft.VisualStudio.Utilities;
 namespace DemoSnippets.Classifier
 {
     [Export(typeof(IClassifierProvider))]
-    [ContentType("DemoSnippets")]
+    [ContentType(DemoSnippets.ContentType)]
     internal class DemoSnippetsClassifierProvider : IClassifierProvider
     {
         [Import]
-        public ITextDocumentFactoryService TextDocumentFactoryService { get; set; }
+        private IClassificationTypeRegistryService ClassificationRegistry { get; set; }
 
-        [Import]
-        private IClassificationTypeRegistryService classificationRegistry { get; set; }
-
-        public IClassifier GetClassifier(ITextBuffer buffer)
-        {
-            if (!this.TextDocumentFactoryService.TryGetTextDocument(buffer, out ITextDocument document))
-            {
-                return null;
-            }
-
-            return buffer.Properties.GetOrCreateSingletonProperty(
-                () => new DemoSnippetsClassifier(buffer, this.classificationRegistry, document.FilePath));
-        }
+        public IClassifier GetClassifier(ITextBuffer buffer) =>
+            buffer.Properties.GetOrCreateSingletonProperty(() =>
+                new DemoSnippetsClassifier(this.ClassificationRegistry));
     }
 }
