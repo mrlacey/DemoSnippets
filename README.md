@@ -26,6 +26,7 @@ Intended to make it easy to use code snippets in demos.
 - Remove any empty tabs from the Toolbox by right-clicking on the Toolbox and selecting **'Remove Empty Tabs'**.
 - Automatically reload Toolbox entries when .demosnippets files are saved. (Can be disabled in Options.)
 - Colorization of .demosnippets files.
+- Create .demosnippets files by selecting File > New Item.
 
 ### .demosnippets file
 

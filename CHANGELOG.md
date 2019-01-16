@@ -1,7 +1,5 @@
 # Road map
 
-- [X] Add colorization of .demosnippets files
-- [ ] Add Item Template for .demosnippets files
 - [ ] (Open to suggestions...)[https://github.com/mrlacey/DemoSnippets/issues/new]
 
 Features that have a checkmark are complete and available for
@@ -12,6 +10,11 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+## 1.5
+
+- [X] Add colorization of .demosnippets files
+- [x] Add Item Template for .demosnippets files
 
 ## 1.4
 
