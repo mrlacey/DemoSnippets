@@ -4,10 +4,7 @@
 
 using System;
 using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace DemoSnippets.Commands

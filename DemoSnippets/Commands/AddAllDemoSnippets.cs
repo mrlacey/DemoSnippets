@@ -5,7 +5,6 @@
 using System;
 using System.ComponentModel.Design;
 using System.IO;
-using System.Threading;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;

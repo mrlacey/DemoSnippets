@@ -4,7 +4,6 @@
 
 using System;
 using System.ComponentModel.Design;
-using System.Threading;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
@@ -24,11 +23,10 @@ namespace DemoSnippets.Commands
 
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in RemoveAllDemoSnippets's constructor requires
-            // the UI thread.
+            // Switch to the main thread - the call to AddCommand in command's constructor requires the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
-            OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
+            var commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             Instance = new RemoveAllDemoSnippets(package, commandService);
         }
 

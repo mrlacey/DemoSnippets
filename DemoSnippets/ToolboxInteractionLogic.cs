@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -95,7 +94,7 @@ namespace DemoSnippets
                         {
                             var name = itemDataObject.GetText(TextDataFormat.Text);
 
-                            if (name.ToString() == item.Snippet)
+                            if (name?.ToString() == item.Snippet)
                             {
                                 toolbox?.RemoveItem(dataObjects[0]);
                                 found = true;

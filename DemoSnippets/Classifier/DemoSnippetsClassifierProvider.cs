@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.ComponentModel.Composition;
-using Microsoft.VisualStudio.Language.StandardClassification;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Utilities;

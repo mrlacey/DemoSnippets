@@ -3,10 +3,8 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -98,8 +96,6 @@ namespace DemoSnippets
         private async Task SetUpRunningDocumentTableEventsAsync(CancellationToken cancellationToken)
         {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-
-            var dte = (DTE)await this.GetServiceAsync(typeof(DTE));
 
             var runningDocumentTable = new RunningDocumentTable(this);
 

@@ -4,9 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DemoSnippets
 {
@@ -18,7 +15,7 @@ namespace DemoSnippets
 
             ToolboxEntry toAdd = null;
 
-            for (int i = 0; i < lines.Length; i++)
+            for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
                 var lineType = DemoSnippetsLineTypeIdentifier.GetLineType(line);
