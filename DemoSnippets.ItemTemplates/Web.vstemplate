@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+    <Name>DemoSnippets</Name>
+    <Description>A repository for pieces of code to drag from the Toolbox when giving a demo or presentation</Description>
+    <Icon>icon.png</Icon>
+    <SortOrder>100</SortOrder>
+    <TemplateID>DemoSnippets.Web</TemplateID>
+    <ProjectType>Web</ProjectType>
+    <AppliesTo>Web</AppliesTo>
+    <ShowByDefault>true</ShowByDefault>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+    <DefaultName>steps.demosnippets</DefaultName>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem ReplaceParameters="false">instructions.demosnippets</ProjectItem>
+  </TemplateContent>
+</VSTemplate>
