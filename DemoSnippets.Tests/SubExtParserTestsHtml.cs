@@ -6,6 +6,15 @@ namespace DemoSnippets.Tests
     [TestClass]
     public class SubExtParserTestsHtml : TestsBase
     {
+        // TODO: add test for - endsnippet with label but no snippet
+        // TODO: add test for - no tab
+        // TODO: add test for - no label
+        // TODO: add test for - endsnippet but snippet is just blank lines
+        // TODO: add test for - tab end snippet
+        // TODO: add test for - file just endsnippet
+        // TODO: add test for - file just tab
+        // TODO: add test for - file just label
+        // TODO: add test for - file just tab & label
         [TestMethod]
         public void ExampleFile()
         {
@@ -18,7 +27,7 @@ namespace DemoSnippets.Tests
                     Tab = "Head",
                     Label = "Step 1 - Add Javascript",
                     Snippet = @"    <script src=""./scripts/coolstuff.js""></script>
-                    <script language=""javascript"" src=""./scripts/Logging.js""></script>"
+    <script language=""javascript"" src=""./scripts/Logging.js""></script>"
                 },
                 new ToolboxEntry
                 {

@@ -256,7 +256,7 @@ namespace DemoSnippets.Tests
         }
 
         [TestMethod]
-        public void TabCanApply_ToMultipleSNippets()
+        public void TabCanApply_ToMultipleSnippets()
         {
             var lines = "# comment line 1"
 + Environment.NewLine + ""

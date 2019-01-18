@@ -35,14 +35,14 @@ namespace DemoSnippets
 
                     if (!string.IsNullOrWhiteSpace(toAdd.Snippet))
                     {
-                        toAdd.Snippet = toAdd.Snippet.Trim();
+                        toAdd.Snippet = this.RemoveBlankLinesFromEnds(toAdd.Snippet);
 
                         result.Add(toAdd);
 
                         toAdd = new ToolboxEntry();
                     }
 
-                    toAdd.Tab = line.Substring(4).Trim();
+                    toAdd.Tab = DemoSnippetsLineTypeIdentifier.GetTabName(line);
 
                     continue;
                 }
@@ -51,24 +51,42 @@ namespace DemoSnippets
                 {
                     if (toAdd == null)
                     {
-                        toAdd = new ToolboxEntry { Label = line.Substring(1).Trim() };
+                        toAdd = new ToolboxEntry
+                        {
+                            Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line)
+                        };
                     }
                     else
                     {
                         if (string.IsNullOrWhiteSpace(toAdd.Snippet))
                         {
-                            toAdd.Label = line.Substring(1).Trim();
+                            toAdd.Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line);
                         }
                         else
                         {
-                            toAdd.Snippet = toAdd.Snippet.Trim();
+                            toAdd.Snippet = this.RemoveBlankLinesFromEnds(toAdd.Snippet);
 
                             result.Add(toAdd);
 
                             var currentTab = toAdd.Tab;
 
-                            toAdd = new ToolboxEntry { Label = line.Substring(1).Trim(), Tab = currentTab };
+                            toAdd = new ToolboxEntry
+                            {
+                                Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line),
+                                Tab = currentTab
+                            };
                         }
+                    }
+                }
+                else if (lineType == DemoSnippetsLineType.EndSnippet)
+                {
+                    if (!string.IsNullOrWhiteSpace(toAdd?.Snippet))
+                    {
+                        toAdd.Snippet = this.RemoveBlankLinesFromEnds(toAdd.Snippet);
+
+                        result.Add(toAdd);
+
+                        toAdd = null;
                     }
                 }
                 else
@@ -94,12 +112,17 @@ namespace DemoSnippets
 
             if (toAdd != null && !string.IsNullOrWhiteSpace(toAdd.Snippet))
             {
-                toAdd.Snippet = toAdd.Snippet.Trim();
+                toAdd.Snippet = this.RemoveBlankLinesFromEnds(toAdd.Snippet);
 
                 result.Add(toAdd);
             }
 
             return result;
+        }
+
+        private string RemoveBlankLinesFromEnds(string snippet)
+        {
+            return snippet.Trim('\r', '\n');
         }
     }
 }

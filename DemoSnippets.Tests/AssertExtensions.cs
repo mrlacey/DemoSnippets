@@ -7,15 +7,15 @@ namespace DemoSnippets.Tests
     {
         public static void ToolboxEntriesAreEqual(this Assert assert, List<ToolboxEntry> expected, List<ToolboxEntry> actual)
         {
-            Assert.AreEqual(expected.Count, actual.Count, $"List sizes differ. Expected {expected.Count} but got {actual.Count}.");
+            Assert.AreEqual(expected.Count, actual.Count, $"List sizes differ.");
 
             for (var index = 0; index < expected.Count; index++)
             {
                 var exp = expected[index];
                 var act = actual[index];
-                Assert.AreEqual(exp.Tab, act.Tab, $"Item {index} has differing 'Tab' value. Expected '{exp.Tab}' but got '{act.Tab}'.");
-                Assert.AreEqual(exp.Label, act.Label, $"Item {index} has differing 'Label' value. Expected '{exp.Label}' but got '{act.Label}'.");
-                Assert.AreEqual(exp.Snippet, act.Snippet, $"Item {index} has differing 'Snippet' value. Expected '{exp.Snippet}' but got '{act.Snippet}'.");
+                Assert.AreEqual(exp.Tab, act.Tab, $"Item {index + 1} has differing 'Tab' value.");
+                Assert.AreEqual(exp.Label, act.Label, $"Item {index + 1} has differing 'Label' value.");
+                Assert.AreEqual(exp.Snippet, act.Snippet, $"Item {index + 1} has differing 'Snippet' value.");
             }
         }
     }

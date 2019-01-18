@@ -1,4 +1,4 @@
-﻿// TAB My C# Demo
+﻿// DEMOSNIPPETS-TAB My C# Demo
 
 // DEMOSNIPPETS-LABEL Step 1
 
@@ -9,9 +9,9 @@ usings MyCoolNamespace;
 
 public struct SuperOptions
 {
-public int Id { get; set; }
-public string Label { get; set; }
-public bool IsEnabled { get; set; }
+    public int Id { get; set; }
+    public string Label { get; set; }
+    public bool IsEnabled { get; set; }
 }
 
 
@@ -19,5 +19,5 @@ public bool IsEnabled { get; set; }
 
 if (UserOptions.TryGetOptions(out SuperOptions[] options))
 {
-Debug.WriteLine(options.Length);
+    Debug.WriteLine(options.Length);
 }
