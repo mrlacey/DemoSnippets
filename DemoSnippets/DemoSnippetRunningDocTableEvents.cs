@@ -39,8 +39,9 @@ namespace DemoSnippets
                 var documentPath = documentInfo.Moniker;
 
                 var extension = Path.GetExtension(documentPath);
+                var fileName = Path.GetFileName(documentPath);
 
-                if (extension?.ToLowerInvariant() == ".demosnippets")
+                if (extension?.ToLowerInvariant() == ".demosnippets" || fileName.ToLowerInvariant().Contains(".demosnippets."))
                 {
                     this.package.JoinableTaskFactory.RunAsync(async () =>
                         await ToolboxInteractionLogic.RefreshEntriesFromFileAsync(documentPath));

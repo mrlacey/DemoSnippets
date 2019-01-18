@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DemoSnippets.Tests
 {
     [TestClass]
-    public class ParserTests
+    public class StandardParserTests : TestsBase
     {
         [TestMethod]
         public void BlankLines_ReturnsEmptyList()
@@ -340,12 +339,6 @@ namespace DemoSnippets.Tests
             Assert.AreEqual("snippet2 line 1", actual[1].Label);
             Assert.AreEqual($"snippet2 line 1{Environment.NewLine}snippet2 line 2", actual[1].Snippet);
             Assert.AreEqual("Demo 2", actual[1].Tab);
-        }
-
-        private List<ToolboxEntry> ParseAsLines(string lines)
-        {
-            var sut = new DemoSnippetsParser();
-            return sut.GetItemsToAdd(lines.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
         }
     }
 }

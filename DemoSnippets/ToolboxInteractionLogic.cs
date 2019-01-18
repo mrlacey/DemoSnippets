@@ -42,9 +42,9 @@ namespace DemoSnippets
             Instance = new ToolboxInteractionLogic(package);
         }
 
-        public static async Task<int> LoadToolboxItemsAsync(string fileName)
+        public static async Task<int> LoadToolboxItemsAsync(string filePath)
         {
-            var lines = File.ReadAllLines(fileName);
+            var lines = File.ReadAllLines(filePath);
 
             var dsp = new DemoSnippetsParser();
             var toAdd = dsp.GetItemsToAdd(lines);
@@ -58,7 +58,7 @@ namespace DemoSnippets
                     item.Tab = DefaultTabName;
                 }
 
-                await AddToToolboxAsync(item.Tab, item.Label, item.Snippet, Path.GetFileNameWithoutExtension(fileName));
+                await AddToToolboxAsync(item.Tab, item.Label, item.Snippet, Path.GetFileName(filePath));
                 addedCount += 1;
             }
 
@@ -399,16 +399,17 @@ namespace DemoSnippets
             return false;
         }
 
-        private static async Task RemoveAllItemsFromFileAsync(string fileName)
+        private static async Task RemoveAllItemsFromFileAsync(string filePath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(CancellationToken.None);
 
             try
             {
-                var nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+                var fileName = Path.GetFileName(filePath);
 
                 if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
                 {
+                    // TODO: review if should be adding to this
                     var tabsToRemove = new List<string>();
 
                     IEnumToolboxTabs tbTabs = null;
@@ -442,7 +443,7 @@ namespace DemoSnippets
                                     {
                                         var dataFileName = itemDataObject.GetData(ToolboxDataFileName).ToString();
 
-                                        if (nameWithoutExtension == dataFileName)
+                                        if (fileName == dataFileName)
                                         {
                                             toolbox?.RemoveItem(dataObjects[0]);
                                         }
