@@ -96,6 +96,50 @@ namespace DemoSnippets.Tests
         }
 
         [TestMethod]
+        public void WhitespaceAround_TabAndLabel_IsIgnored()
+        {
+            var html = "<!--  DEMOSNIPPETS-TAB   Head    -->"
++ Environment.NewLine + "<!--  DEMOSNIPPETS-LABEL   Label1   -->"
++ Environment.NewLine + "<script src=\"./scripts/coolstuff.js\"></script>";
+
+            var actual = ParseAsLines(html);
+
+            var expected = new List<ToolboxEntry>
+            {
+                new ToolboxEntry
+                {
+                    Tab = "Head",
+                    Label = "Label1",
+                    Snippet = @"<script src=""./scripts/coolstuff.js""></script>"
+                },
+            };
+
+            Assert.That.ToolboxEntriesAreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void NoWhitespaceAround_TabAndLabel_IsFine()
+        {
+            var html = "<!--DEMOSNIPPETS-TABHead-->"
+                       + Environment.NewLine + "<!--DEMOSNIPPETS-LABELLabel1-->"
+                       + Environment.NewLine + "<script src=\"./scripts/coolstuff.js\"></script>";
+
+            var actual = ParseAsLines(html);
+
+            var expected = new List<ToolboxEntry>
+            {
+                new ToolboxEntry
+                {
+                    Tab = "Head",
+                    Label = "Label1",
+                    Snippet = @"<script src=""./scripts/coolstuff.js""></script>"
+                },
+            };
+
+            Assert.That.ToolboxEntriesAreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void JustEndSnippet()
         {
             var html = "<!-- DEMOSNIPPETS-ENDSNIPPET -->";

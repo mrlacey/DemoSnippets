@@ -11,8 +11,8 @@ namespace DemoSnippets
         private const string LineStartComment = "#";
         private const string LineStartTab = "tab:";
         private const string LineStartLabel = "-";
-        private const string CommentTab = "DEMOSNIPPETS-TAB ";
-        private const string CommentLabel = "DEMOSNIPPETS-LABEL ";
+        private const string CommentTab = "DEMOSNIPPETS-TAB";
+        private const string CommentLabel = "DEMOSNIPPETS-LABEL";
         private const string CommentEndSnippet = "DEMOSNIPPETS-ENDSNIPPET";
 
         public static DemoSnippetsLineType GetLineType(string line)
@@ -49,7 +49,7 @@ namespace DemoSnippets
             {
                 var startIndex = line.IndexOf(CommentTab, StringComparison.InvariantCultureIgnoreCase);
 
-                return RemoveClosingCommentTabs(line.Substring(startIndex + CommentTab.Length));
+                return RemoveClosingCommentTabs(line.Substring(startIndex + CommentTab.Length)).Trim();
             }
         }
 
@@ -63,7 +63,7 @@ namespace DemoSnippets
             {
                 var startIndex = line.IndexOf(CommentLabel, StringComparison.InvariantCultureIgnoreCase);
 
-                return RemoveClosingCommentTabs(line.Substring(startIndex + CommentLabel.Length));
+                return RemoveClosingCommentTabs(line.Substring(startIndex + CommentLabel.Length)).Trim();
             }
         }
 

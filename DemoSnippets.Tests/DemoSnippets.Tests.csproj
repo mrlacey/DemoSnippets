@@ -48,6 +48,7 @@
     <Compile Include="SubExtParserTestsCSS.cs" />
     <Compile Include="SubExtParserTestsHtml.cs" />
     <Compile Include="SubExtParserTestsJS.cs" />
+    <Compile Include="SubExtParserTestsVB.cs" />
     <Compile Include="TestsBase.cs" />
     <Content Include="Examples\example.demosnippets.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
