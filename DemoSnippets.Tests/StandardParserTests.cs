@@ -231,6 +231,53 @@ namespace DemoSnippets.Tests
         }
 
         [TestMethod]
+        public void WhiteSpaceTab_IsEmpty()
+        {
+            var lines = "# comment line 1"
++ Environment.NewLine + ""
++ Environment.NewLine + "Tab:     "
++ Environment.NewLine + "- Step 1"
++ Environment.NewLine + ""
++ Environment.NewLine + "snippet line 1"
++ Environment.NewLine + "snippet line 2"
++ Environment.NewLine + ""
++ Environment.NewLine + "- "
++ Environment.NewLine + ""
++ Environment.NewLine + "";
+
+            var actual = ParseAsLines(lines);
+
+            Assert.AreEqual(1, actual.Count);
+            Assert.AreEqual("Step 1", actual[0].Label);
+            Assert.AreEqual($"snippet line 1{Environment.NewLine}snippet line 2", actual[0].Snippet);
+            Assert.AreEqual(string.Empty, actual[0].Tab);
+        }
+
+        [TestMethod]
+        public void Tab_IsBlankIfNotSet()
+        {
+            var lines = "# comment line 1"
++ Environment.NewLine + ""
++ Environment.NewLine + "- step 1"
++ Environment.NewLine + ""
++ Environment.NewLine + "snippet line 1"
++ Environment.NewLine + "snippet line 2"
++ Environment.NewLine + ""
++ Environment.NewLine + "tab: Demo 2"
++ Environment.NewLine + "- Step 2"
++ Environment.NewLine + ""
++ Environment.NewLine + "snippet2 line 1"
++ Environment.NewLine + "snippet2 line 2"
++ Environment.NewLine + "";
+
+            var actual = ParseAsLines(lines);
+
+            Assert.AreEqual(2, actual.Count);
+            Assert.AreEqual(string.Empty, actual[0].Tab);
+            Assert.AreEqual("Demo 2", actual[1].Tab);
+        }
+
+        [TestMethod]
         public void IfMultipleTabsSetInARow_UseLast()
         {
             var lines = "# comment line 1"
