@@ -15,6 +15,9 @@ namespace DemoSnippets
 
             ToolboxEntry toAdd = null;
 
+            // need to keep track of last set tab name separately so can remember it after ENDSNIPPET sections
+            var tab = string.Empty;
+
             for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
@@ -42,7 +45,8 @@ namespace DemoSnippets
                         toAdd = new ToolboxEntry();
                     }
 
-                    toAdd.Tab = DemoSnippetsLineTypeIdentifier.GetTabName(line);
+                    tab = DemoSnippetsLineTypeIdentifier.GetTabName(line);
+                    toAdd.Tab = tab;
 
                     continue;
                 }
@@ -53,7 +57,8 @@ namespace DemoSnippets
                     {
                         toAdd = new ToolboxEntry
                         {
-                            Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line)
+                            Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line),
+                            Tab = tab
                         };
                     }
                     else
@@ -68,12 +73,10 @@ namespace DemoSnippets
 
                             result.Add(toAdd);
 
-                            var currentTab = toAdd.Tab;
-
                             toAdd = new ToolboxEntry
                             {
                                 Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line),
-                                Tab = currentTab
+                                Tab = tab
                             };
                         }
                     }
