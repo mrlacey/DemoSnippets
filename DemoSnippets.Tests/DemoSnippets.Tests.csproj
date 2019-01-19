@@ -45,6 +45,7 @@
     <Compile Include="StandardParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubExtParserTestsCSharp.cs" />
+    <Compile Include="SubExtParserTestsCSS.cs" />
     <Compile Include="SubExtParserTestsHtml.cs" />
     <Compile Include="TestsBase.cs" />
     <Content Include="Examples\example.demosnippets.css">
