@@ -39,7 +39,7 @@ namespace DemoSnippets.Classifier
 
         private IClassificationType GetClassificationType(string line)
         {
-            switch (DemoSnippetsLineTypeIdentifier.GetLineType(line))
+            switch (new DemoSnippetsLineTypeIdentifier().GetLineType(line))
             {
                 case DemoSnippetsLineType.Comment:
                     return this.classificationComment;

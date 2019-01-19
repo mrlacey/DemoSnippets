@@ -6,7 +6,7 @@ using System;
 
 namespace DemoSnippets
 {
-    public static class DemoSnippetsLineTypeIdentifier
+    public class DemoSnippetsLineTypeIdentifier
     {
         private const string LineStartComment = "#";
         private const string LineStartTab = "tab:";
@@ -15,22 +15,37 @@ namespace DemoSnippets
         private const string CommentLabel = "DEMOSNIPPETS-LABEL";
         private const string CommentEndSnippet = "DEMOSNIPPETS-ENDSNIPPET";
 
-        public static DemoSnippetsLineType GetLineType(string line)
+        // For some languages (e.g C++) '#' has a separate meaning to a DemoSnippets comment indicator
+        // Track if in a file containing subExt formatting so know not to look for standard formatting
+        private bool subExtFormattingOnly = false;
+
+        public DemoSnippetsLineType GetLineType(string line)
         {
-            if (line.StartsWith(LineStartComment))
+            if (!this.subExtFormattingOnly && line.StartsWith(LineStartComment))
             {
                 return DemoSnippetsLineType.Comment;
             }
-            else if (line.StartsWith(LineStartLabel) || line.ToUpperInvariant().Contains(CommentLabel))
+            else if (!this.subExtFormattingOnly && line.StartsWith(LineStartLabel))
             {
                 return DemoSnippetsLineType.Label;
             }
-            else if (line.ToLowerInvariant().StartsWith(LineStartTab) || line.ToUpperInvariant().Contains(CommentTab))
+            else if (line.ToUpperInvariant().Contains(CommentLabel))
             {
+                this.subExtFormattingOnly = true;
+                return DemoSnippetsLineType.Label;
+            }
+            else if (!this.subExtFormattingOnly && line.ToLowerInvariant().StartsWith(LineStartTab))
+            {
+                return DemoSnippetsLineType.Tab;
+            }
+            else if (line.ToUpperInvariant().Contains(CommentTab))
+            {
+                this.subExtFormattingOnly = true;
                 return DemoSnippetsLineType.Tab;
             }
             else if (line.ToUpperInvariant().Contains(CommentEndSnippet))
             {
+                this.subExtFormattingOnly = true;
                 return DemoSnippetsLineType.EndSnippet;
             }
             else
@@ -39,7 +54,7 @@ namespace DemoSnippets
             }
         }
 
-        public static string GetTabName(string line)
+        public string GetTabName(string line)
         {
             if (line.ToLowerInvariant().StartsWith(LineStartTab))
             {
@@ -53,7 +68,7 @@ namespace DemoSnippets
             }
         }
 
-        public static string GetLabelName(string line)
+        public string GetLabelName(string line)
         {
             if (line.ToLowerInvariant().StartsWith(LineStartLabel))
             {

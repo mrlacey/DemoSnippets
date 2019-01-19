@@ -18,10 +18,12 @@ namespace DemoSnippets
             // need to keep track of last set tab name separately so can remember it after ENDSNIPPET sections
             var tab = string.Empty;
 
+            var lineIdentifier = new DemoSnippetsLineTypeIdentifier();
+
             for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
-                var lineType = DemoSnippetsLineTypeIdentifier.GetLineType(line);
+                var lineType = lineIdentifier.GetLineType(line);
 
                 if (lineType == DemoSnippetsLineType.Comment)
                 {
@@ -45,7 +47,7 @@ namespace DemoSnippets
                         toAdd = new ToolboxEntry();
                     }
 
-                    tab = DemoSnippetsLineTypeIdentifier.GetTabName(line);
+                    tab = lineIdentifier.GetTabName(line);
                     toAdd.Tab = tab;
 
                     continue;
@@ -57,7 +59,7 @@ namespace DemoSnippets
                     {
                         toAdd = new ToolboxEntry
                         {
-                            Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line),
+                            Label = lineIdentifier.GetLabelName(line),
                             Tab = tab
                         };
                     }
@@ -65,7 +67,7 @@ namespace DemoSnippets
                     {
                         if (string.IsNullOrWhiteSpace(toAdd.Snippet))
                         {
-                            toAdd.Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line);
+                            toAdd.Label = lineIdentifier.GetLabelName(line);
                         }
                         else
                         {
@@ -75,7 +77,7 @@ namespace DemoSnippets
 
                             toAdd = new ToolboxEntry
                             {
-                                Label = DemoSnippetsLineTypeIdentifier.GetLabelName(line),
+                                Label = lineIdentifier.GetLabelName(line),
                                 Tab = tab
                             };
                         }
