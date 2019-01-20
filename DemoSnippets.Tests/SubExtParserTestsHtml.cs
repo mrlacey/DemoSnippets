@@ -18,8 +18,8 @@ namespace DemoSnippets.Tests
                 {
                     Tab = "Head",
                     Label = "Step 1 - Add Javascript",
-                    Snippet = @"    <script src=""./scripts/coolstuff.js""></script>
-    <script language=""javascript"" src=""./scripts/Logging.js""></script>"
+                    Snippet = @"    <script src=""./scripts/coolstuff.js""></script>"
+      + Environment.NewLine + @"    <script language=""javascript"" src=""./scripts/Logging.js""></script>"
                 },
                 new ToolboxEntry
                 {
@@ -31,12 +31,12 @@ namespace DemoSnippets.Tests
                 {
                     Tab = "Body",
                     Label = "Step 3 - Add links",
-                    Snippet = @"<ul>
-    <li>Home</li>
-    <li>Store</li>
-    <li>About</li>
-    <li>Admin</li>
-</ul>"
+                    Snippet = @"<ul>"
+      + Environment.NewLine + @"    <li>Home</li>"
+      + Environment.NewLine + @"    <li>Store</li>"
+      + Environment.NewLine + @"    <li>About</li>"
+      + Environment.NewLine + @"    <li>Admin</li>"
+      + Environment.NewLine + @"</ul>"
                 },
                 new ToolboxEntry
                 {
