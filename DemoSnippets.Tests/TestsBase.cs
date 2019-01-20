@@ -11,22 +11,23 @@ namespace DemoSnippets.Tests
         {
             const string crlf = "\r\n";
             const string cr = "\r";
+            const string lf = "\n";
 
-            var splitString = Environment.NewLine;
+            var envnl = Environment.NewLine;
+
+            var splitString = envnl;
 
             if (lines.Contains(crlf))
             {
-                if (Environment.NewLine != crlf)
-                {
-                    splitString = crlf;
-                }
+                splitString = crlf;
             }
             else if (lines.Contains(cr))
             {
-                if (Environment.NewLine != cr)
-                {
-                    splitString = cr;
-                }
+                splitString = cr;
+            }
+            else if (lines.Contains(lf))
+            {
+                splitString = lf;
             }
 
             var sut = new DemoSnippetsParser();
