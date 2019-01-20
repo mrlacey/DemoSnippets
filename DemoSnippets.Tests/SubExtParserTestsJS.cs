@@ -8,7 +8,7 @@ namespace DemoSnippets.Tests
     public class SubExtParserTestsJS : TestsBase
     {
         [TestMethod]
-        public void ExampleFile()
+        public void ExampleFile_JS()
         {
             var actual = ParseExampleFile("./Examples/example.demosnippets.js");
 

@@ -8,7 +8,7 @@ namespace DemoSnippets.Tests
     public class SubExtParserTestsCPP : TestsBase
     {
         [TestMethod]
-        public void ExampleFile()
+        public void ExampleFile_CPP()
         {
             var actual = ParseExampleFile("./Examples/example.demosnippets.cpp");
 

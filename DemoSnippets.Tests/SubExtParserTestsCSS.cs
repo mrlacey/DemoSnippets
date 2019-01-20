@@ -8,7 +8,7 @@ namespace DemoSnippets.Tests
     public class SubExtParserTestsCSS : TestsBase
     {
         [TestMethod]
-        public void ExampleFile()
+        public void ExampleFile_CSS()
         {
             var actual = ParseExampleFile("./Examples/example.demosnippets.css");
 

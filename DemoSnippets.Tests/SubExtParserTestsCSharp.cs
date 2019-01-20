@@ -9,7 +9,7 @@ namespace DemoSnippets.Tests
     public class SubExtParserTestsCSharp : TestsBase
     {
         [TestMethod]
-        public void ExampleFile()
+        public void ExampleFile_CS()
         {
             var actual = ParseExampleFile("./Examples/example.demosnippets.cs");
 
