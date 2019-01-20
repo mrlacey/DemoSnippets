@@ -64,8 +64,8 @@ namespace DemoSnippets.Tests
                 {
                     Tab = string.Empty,
                     Label = "Step 1 - Add Javascript",
-                    Snippet = @"<script src=""./scripts/coolstuff.js""></script>
-<script language=""javascript"" src=""./scripts/Logging.js""></script>"
+                    Snippet = @"<script src=""./scripts/coolstuff.js""></script>"
+      + Environment.NewLine + @"<script language=""javascript"" src=""./scripts/Logging.js""></script>"
                 },
             };
 
@@ -87,8 +87,8 @@ namespace DemoSnippets.Tests
                 {
                     Tab = "Head",
                     Label = "<script src=\"./scripts/coolstuff.js\"></script>",
-                    Snippet = @"<script src=""./scripts/coolstuff.js""></script>
-<script language=""javascript"" src=""./scripts/Logging.js""></script>"
+                    Snippet = @"<script src=""./scripts/coolstuff.js""></script>"
+      + Environment.NewLine + @"<script language=""javascript"" src=""./scripts/Logging.js""></script>"
                 },
             };
 
