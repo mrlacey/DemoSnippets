@@ -28,7 +28,7 @@ Intended to make it easy to use code snippets in demos.
 - Colorization of .demosnippets files.
 - Create .demosnippets files by selecting File > New Item.
 
-[Formatting DemoSnippets files](./formatting.md)
+[Formatting DemoSnippets files](./Formatting.md)
 
 
 See the [change log](CHANGELOG.md) for changes and road map.
