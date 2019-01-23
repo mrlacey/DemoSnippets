@@ -409,9 +409,6 @@ namespace DemoSnippets
 
                 if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
                 {
-                    // TODO: review if should be adding to this
-                    var tabsToRemove = new List<string>();
-
                     IEnumToolboxTabs tbTabs = null;
                     toolbox?.EnumTabs(out tbTabs);
                     var returnedTabNames = new string[1];
@@ -451,11 +448,6 @@ namespace DemoSnippets
                                 }
                             }
                         }
-                    }
-
-                    foreach (var tabToRemove in tabsToRemove.Distinct().ToList())
-                    {
-                        await RemoveTabIfEmptyAsync(tabToRemove, CancellationToken.None);
                     }
                 }
                 else

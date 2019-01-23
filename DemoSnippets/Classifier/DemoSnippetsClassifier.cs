@@ -24,7 +24,9 @@ namespace DemoSnippets.Classifier
             this.classificationOther = registry.GetClassificationType(DemoSnippetsClassificationTypes.DemoSnippetsOther);
         }
 
+#pragma warning disable 67 //CS0067
         public event EventHandler<ClassificationChangedEventArgs> ClassificationChanged;
+#pragma warning restore 67
 
         public IList<ClassificationSpan> GetClassificationSpans(SnapshotSpan span)
         {
