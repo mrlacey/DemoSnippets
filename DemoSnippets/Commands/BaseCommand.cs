@@ -49,7 +49,9 @@ namespace DemoSnippets.Commands
                 // Save the name of the selected file so we have it when the command is executed
                 this.SelectedFileName = transformFileInfo.FullName;
 
-                if (transformFileInfo.Name.ToLowerInvariant().EndsWith(".demosnippets"))
+                var lowercaseName = transformFileInfo.Name.ToLowerInvariant();
+
+                if (lowercaseName.EndsWith(".demosnippets") || lowercaseName.Contains(".demosnippets."))
                 {
                     menuCmd.Visible = menuCmd.Enabled = true;
                 }

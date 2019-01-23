@@ -231,7 +231,7 @@ namespace DemoSnippets
         {
             await OutputPane.Instance.WriteAsync($"Loading *.demosnippets files under: {slnDirectory}");
 
-            var allSnippetFiles = Directory.EnumerateFiles(slnDirectory, "*.demosnippets", SearchOption.AllDirectories);
+            var allSnippetFiles = Directory.EnumerateFiles(slnDirectory, "*.demosnippets*", SearchOption.AllDirectories);
 
             var fileCount = 0;
             var itemsCount = 0;
