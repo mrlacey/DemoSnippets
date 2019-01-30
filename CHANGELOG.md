@@ -11,6 +11,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 1.7
+
+- [x] support laels that start with '@' (or any character)
+
 ## 1.6
 
 - [x] Support sub-extensions of "*.demosnippets.*"
