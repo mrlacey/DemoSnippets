@@ -303,7 +303,8 @@ namespace DemoSnippets
                 var itemInfo = new TBXITEMINFO[1];
                 var tbItem = new OleDataObject();
 
-                itemInfo[0].bstrText = label;
+                // Prefix with a zero-width whitespace so can use any character as first char (@ prefix at start of string indicates a resource reference)
+                itemInfo[0].bstrText = "\u200B" + label;
                 itemInfo[0].dwFlags = (uint)__TBXITEMINFOFLAGS.TBXIF_DONTPERSIST;
 
                 tbItem.SetText(actualText, TextDataFormat.Text);
