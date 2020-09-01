@@ -90,7 +90,9 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Resource Include="Icons\demos.png" />
-    <Resource Include="Resources\Icon.png" />
+    <Content Include="Resources\Icon.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="DemoSnippets.ruleset" />
     <Content Include="icons.pkgdef">
       <IncludeInVSIX>true</IncludeInVSIX>

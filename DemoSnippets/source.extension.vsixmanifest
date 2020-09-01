@@ -8,7 +8,6 @@
         <License>Resources\LICENSE</License>
         <ReleaseNotes>https://github.com/mrlacey/DemoSnippets/blob/master/CHANGELOG.md</ReleaseNotes>
         <Icon>Resources\Icon.png</Icon>
-        <PreviewImage>Resources\Icon.png</PreviewImage>
         <Tags>demo toolbox snippet</Tags>
     </Metadata>
     <Installation>
