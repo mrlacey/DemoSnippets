@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="DemoSnippets.e2d68c23-8599-40e8-b402-a57060bf3d29" Version="1.7" Language="en-US" Publisher="Matt Lacey" />
+        <Identity Id="DemoSnippets.e2d68c23-8599-40e8-b402-a57060bf3d29" Version="1.8" Language="en-US" Publisher="Matt Lacey" />
         <DisplayName>DemoSnippets</DisplayName>
         <Description xml:space="preserve">A way to easily add the contents of *.demosnippets files to the Toolbox.</Description>
         <MoreInfo>https://github.com/mrlacey/DemoSnippets</MoreInfo>
@@ -24,5 +24,6 @@
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
         <Asset Type="Microsoft.VisualStudio.ItemTemplate" d:Source="Project" d:TargetPath="|DemoSnippets.ItemTemplates;TemplateProjectOutputGroup|" Path="ItemTemplates" d:VsixSubPath="ItemTemplates" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="icons.pkgdef" />
     </Assets>
 </PackageManifest>

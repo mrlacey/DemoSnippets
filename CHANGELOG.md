@@ -11,6 +11,11 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 1.8
+
+- [x] Add collapsible sections in .demosnippets files
+- [x] Add custom icon for .demosnippets files
+
 ## 1.7
 
 - [x] support labels that start with '@' (or any character)
