@@ -8,9 +8,9 @@ namespace DemoSnippets
 {
     public class DemoSnippetsLineTypeIdentifier
     {
-        private const string LineStartComment = "#";
-        private const string LineStartTab = "tab:";
-        private const string LineStartLabel = "-";
+        internal const string LineStartComment = "#";
+        internal const string LineStartTab = "tab:";
+        internal const string LineStartLabel = "-";
         private const string CommentTab = "DEMOSNIPPETS-TAB";
         private const string CommentLabel = "DEMOSNIPPETS-LABEL";
         private const string CommentEndSnippet = "DEMOSNIPPETS-ENDSNIPPET";
