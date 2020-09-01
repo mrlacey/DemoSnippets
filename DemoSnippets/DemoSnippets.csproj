@@ -89,11 +89,15 @@
       <Link>Resources\LICENSE</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\Icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Resource Include="Icons\demos.png" />
+    <Resource Include="Resources\Icon.png" />
+    <None Include="DemoSnippets.ruleset" />
+    <Content Include="icons.pkgdef">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="DemoSnippets.ruleset" />
+    <Content Include="Icons\Monikers.imagemanifest">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>

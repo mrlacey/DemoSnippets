@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImageManifest
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.microsoft.com/VisualStudio/ImageManifestSchema/2014">
+    <Symbols>
+        <String Name="Resources" Value="/DemoSnippets;Component/Icons" />
+        <Guid Name="MonikersGuid" Value="{dc1a92a6-2584-4967-9273-bc507eff6a23}" />
+        <ID Name="demosnippets" Value="0" />
+    </Symbols>
+    <Images>
+        <Image Guid="$(MonikersGuid)" ID="$(demosnippets)">
+            <Source Uri="$(Resources)/demos.png">
+                <Size Value="32" />
+            </Source>
+        </Image>
+    </Images>
+    <ImageLists />
+</ImageManifest>
