@@ -16,11 +16,11 @@ namespace DemoSnippets.Classifier
         public const string DemoSnippetsComment = PredefinedClassificationTypeNames.Comment;
         public const string DemoSnippetsOther = PredefinedClassificationTypeNames.Other;
 
-        [Export]
+        [Export(typeof(ClassificationTypeDefinition))]
         [Name(DemoSnippetsTab)]
         public static ClassificationTypeDefinition DemoSnippetsClassificationTab { get; set; }
 
-        [Export]
+        [Export(typeof(ClassificationTypeDefinition))]
         [Name(DemoSnippetsLabel)]
         public static ClassificationTypeDefinition DemoSnippetsClassificationLabel { get; set; }
     }
