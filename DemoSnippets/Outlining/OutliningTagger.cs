@@ -4,25 +4,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
-using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Tagging;
-using Microsoft.VisualStudio.Utilities;
 
 namespace DemoSnippets.Outlining
 {
     internal sealed class OutliningTagger : ITagger<IOutliningRegionTag>
     {
-        string startHide = "[";     //the characters that start the outlining region
-        string endHide = "]";       //the characters that end the outlining region
-        string ellipsis = "...";    //the characters that are displayed when the region is collapsed
-        string hoverText = "hover text"; //the contents of the tooltip for the collapsed span
-        ITextBuffer buffer;
-        ITextSnapshot snapshot;
-        List<Region> regions;
-        bool initialParse = true;
+        private const string Ellipsis = "...";
+        private readonly ITextBuffer buffer;
+        private ITextSnapshot snapshot;
+        private List<Region> regions;
 
         public OutliningTagger(ITextBuffer buffer)
         {
@@ -30,19 +23,24 @@ namespace DemoSnippets.Outlining
             this.snapshot = buffer.CurrentSnapshot;
             this.regions = new List<Region>();
             this.ReParse();
-            this.buffer.Changed += BufferChanged;
+            this.buffer.Changed += this.BufferChanged;
         }
+
+        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
 
         public IEnumerable<ITagSpan<IOutliningRegionTag>> GetTags(NormalizedSnapshotSpanCollection spans)
         {
             if (spans.Count == 0)
+            {
                 yield break;
+            }
 
             List<Region> currentRegions = this.regions;
             ITextSnapshot currentSnapshot = this.snapshot;
             SnapshotSpan entire = new SnapshotSpan(spans[0].Start, spans[spans.Count - 1].End).TranslateTo(currentSnapshot, SpanTrackingMode.EdgeExclusive);
             int startLineNumber = entire.Start.GetContainingLine().LineNumber;
             int endLineNumber = entire.End.GetContainingLine().LineNumber;
+
             foreach (var region in currentRegions)
             {
                 if (region.StartLine <= endLineNumber &&
@@ -51,39 +49,44 @@ namespace DemoSnippets.Outlining
                     var startLine = currentSnapshot.GetLineFromLineNumber(region.StartLine);
                     var endLine = currentSnapshot.GetLineFromLineNumber(region.EndLine);
 
-                    //the region starts at the beginning of the "[", and goes until the *end* of the line that contains the "]".
                     yield return new TagSpan<IOutliningRegionTag>(
-                        new SnapshotSpan(startLine.Start + region.StartOffset,
-                        endLine.End),
-                        new OutliningRegionTag(false, false, ellipsis, hoverText));
+                        new SnapshotSpan(startLine.Start + region.StartOffset, endLine.End),
+                        new OutliningRegionTag(false, false, Ellipsis, string.Empty));
                 }
             }
         }
 
-        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
+        private static SnapshotSpan AsSnapshotSpan(Region region, ITextSnapshot snapshot)
+        {
+            var startLine = snapshot.GetLineFromLineNumber(region.StartLine);
+            var endLine = (region.StartLine == region.EndLine)
+                 ? startLine
+                 : snapshot.GetLineFromLineNumber(region.EndLine);
 
-        void BufferChanged(object sender, TextContentChangedEventArgs e)
+            return new SnapshotSpan(startLine.Start + region.StartOffset, endLine.End);
+        }
+
+        private void BufferChanged(object sender, TextContentChangedEventArgs e)
         {
             // If this isn't the most up-to-date version of the buffer, then ignore it for now (we'll eventually get another change event).
             if (e.After != this.buffer.CurrentSnapshot)
+            {
                 return;
+            }
+
             this.ReParse();
         }
 
-        void ReParse()
+        private void ReParse()
         {
             ITextSnapshot newSnapshot = this.buffer.CurrentSnapshot;
             List<Region> newRegions = new List<Region>();
 
-            //keep the current (deepest) partial region, which will have
-            // references to any parent partial regions.
-            PartialRegion currentRegion = null;
             PartialRegion currentTab = null;
             PartialRegion currentLabel = null;
 
             foreach (var line in newSnapshot.Lines)
             {
-                int regionStart = -1;
                 string text = line.GetText();
 
                 if (text.StartsWith(DemoSnippetsLineTypeIdentifier.LineStartTab, StringComparison.InvariantCultureIgnoreCase))
@@ -114,10 +117,6 @@ namespace DemoSnippets.Outlining
                         currentTab = null;
                     }
 
-                    // close any existing label regions
-                    // close any open tab regions
-                    // start a new tab region
-
                     currentTab = new PartialRegion()
                     {
                         StartLine = line.LineNumber,
@@ -126,8 +125,6 @@ namespace DemoSnippets.Outlining
                 }
                 else if (text.StartsWith(DemoSnippetsLineTypeIdentifier.LineStartLabel, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    // close any existing label regions
-                    // start a new label region
                     if (currentLabel != null)
                     {
                         newRegions.Add(new Region()
@@ -148,106 +145,34 @@ namespace DemoSnippets.Outlining
                         PartialParent = currentTab
                     };
                 }
-
-                // if end of file
-                // close any open regions
-
-                //////  if ((regionStart = text.IndexOf(startHide, StringComparison.Ordinal)) != -1)
-                ////{
-                ////    regionStart = 0;
-                ////    int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
-                ////    int newLevel;
-                ////    if (!TryGetLevel(text, regionStart, out newLevel))
-                ////        newLevel = currentLevel + 1;
-
-                ////    //levels are the same and we have an existing region;
-                ////    //end the current region and start the next
-                ////    if (currentLevel == newLevel && currentRegion != null)
-                ////    {
-                ////        newRegions.Add(new Region()
-                ////        {
-                ////            Level = currentRegion.Level,
-                ////            StartLine = currentRegion.StartLine,
-                ////            StartOffset = currentRegion.StartOffset,
-                ////            EndLine = line.LineNumber
-                ////        });
-
-                ////        currentRegion = new PartialRegion()
-                ////        {
-                ////            Level = newLevel,
-                ////            StartLine = line.LineNumber,
-                ////            StartOffset = regionStart,
-                ////            PartialParent = currentRegion.PartialParent
-                ////        };
-                ////    }
-                ////    //this is a new (sub)region
-                ////    else
-                ////    {
-                ////        currentRegion = new PartialRegion()
-                ////        {
-                ////            Level = newLevel,
-                ////            StartLine = line.LineNumber,
-                ////            StartOffset = regionStart,
-                ////            PartialParent = currentRegion
-                ////        };
-                ////    }
-                ////}
-                //////lines that contain "]" denote the end of a region
-                ////else if ((regionStart = text.IndexOf(endHide, StringComparison.Ordinal)) != -1)
-                ////{
-                ////    int currentLevel = (currentRegion != null) ? currentRegion.Level : 1;
-                ////    int closingLevel;
-                ////    if (!TryGetLevel(text, regionStart, out closingLevel))
-                ////        closingLevel = currentLevel;
-
-                ////    //the regions match
-                ////    if (currentRegion != null &&
-                ////        currentLevel == closingLevel)
-                ////    {
-                ////        newRegions.Add(new Region()
-                ////        {
-                ////            Level = currentLevel,
-                ////            StartLine = currentRegion.StartLine,
-                ////            StartOffset = currentRegion.StartOffset,
-                ////            EndLine = line.LineNumber
-                ////        });
-
-                ////        currentRegion = currentRegion.PartialParent;
-                ////    }
-                ////}
             }
 
-            //if (buffer.CurrentSnapshot)
-            if (initialParse)
+            // Close any regions still open
+            if (currentLabel != null)
             {
-                if (currentLabel != null)
+                newRegions.Add(new Region()
                 {
-                    newRegions.Add(new Region()
-                    {
-                        Level = 2,
-                        StartLine = currentLabel.StartLine,
-                        StartOffset = currentLabel.StartOffset,
-                        EndLine = newSnapshot.Lines.Count() - 1
-                    });
-                }
-
-                if (currentTab != null)
-                {
-                    newRegions.Add(new Region()
-                    {
-                        Level = 1,
-                        StartLine = currentTab.StartLine,
-                        StartOffset = currentTab.StartOffset,
-                        EndLine = newSnapshot.Lines.Count() - 1
-                    });
-
-                    currentTab = null;
-                }
-
-                initialParse = false;
+                    Level = 2,
+                    StartLine = currentLabel.StartLine,
+                    StartOffset = currentLabel.StartOffset,
+                    EndLine = newSnapshot.Lines.Count() - 1
+                });
             }
 
-            //determine the changed span, and send a changed event with the new spans
+            if (currentTab != null)
+            {
+                newRegions.Add(new Region()
+                {
+                    Level = 1,
+                    StartLine = currentTab.StartLine,
+                    StartOffset = currentTab.StartOffset,
+                    EndLine = newSnapshot.Lines.Count() - 1
+                });
+
+                currentTab = null;
+            }
+
+            // determine the changed span, and send a changed event with the new spans
             List<Span> oldSpans =
                 new List<Span>(this.regions.Select(r => AsSnapshotSpan(r, this.snapshot)
                     .TranslateTo(newSnapshot, SpanTrackingMode.EdgeExclusive)
@@ -258,9 +183,7 @@ namespace DemoSnippets.Outlining
             NormalizedSpanCollection oldSpanCollection = new NormalizedSpanCollection(oldSpans);
             NormalizedSpanCollection newSpanCollection = new NormalizedSpanCollection(newSpans);
 
-            //the changed regions are regions that appear in one set or the other, but not both.
-            NormalizedSpanCollection removed =
-            NormalizedSpanCollection.Difference(oldSpanCollection, newSpanCollection);
+            var removed = NormalizedSpanCollection.Difference(oldSpanCollection, newSpanCollection);
 
             int changeStart = int.MaxValue;
             int changeEnd = -1;
@@ -289,50 +212,20 @@ namespace DemoSnippets.Outlining
             }
         }
 
-        static bool TryGetLevel(string text, int startIndex, out int level)
-        {
-            level = -1;
-            if (text.Length > startIndex + 3)
-            {
-                if (int.TryParse(text.Substring(startIndex + 1), out level))
-                    return true;
-            }
-
-            return false;
-        }
-
-        static SnapshotSpan AsSnapshotSpan(Region region, ITextSnapshot snapshot)
-        {
-            var startLine = snapshot.GetLineFromLineNumber(region.StartLine);
-            var endLine = (region.StartLine == region.EndLine) ? startLine
-                 : snapshot.GetLineFromLineNumber(region.EndLine);
-            return new SnapshotSpan(startLine.Start + region.StartOffset, endLine.End);
-        }
-
-        class PartialRegion
+        private class PartialRegion
         {
             public int StartLine { get; set; }
+
             public int StartOffset { get; set; }
+
             public int Level { get; set; }
+
             public PartialRegion PartialParent { get; set; }
         }
 
-        class Region : PartialRegion
+        private class Region : PartialRegion
         {
             public int EndLine { get; set; }
-        }
-    }
-
-    [Export(typeof(ITaggerProvider))]
-    [TagType(typeof(IOutliningRegionTag))]
-    [ContentType("text")]
-    internal sealed class OutliningTaggerProvider : ITaggerProvider
-    {
-        public ITagger<T> CreateTagger<T>(ITextBuffer buffer) where T : ITag
-        {
-            //create a single tagger for each buffer.
-            Func<ITagger<T>> sc = delegate () { return new OutliningTagger(buffer) as ITagger<T>; };
-            return buffer.Properties.GetOrCreateSingletonProperty<ITagger<T>>(sc);
         }
     }
 }

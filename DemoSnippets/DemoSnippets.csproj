@@ -75,6 +75,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Outlining\OutliningTagger.cs" />
+    <Compile Include="Outlining\OutliningTaggerProvider.cs" />
     <Compile Include="OutputPane.cs" />
     <Compile Include="Commands\RemoveAllDemoSnippets.cs" />
     <Compile Include="DemoSnippetRunningDocTableEvents.cs" />
