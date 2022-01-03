@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="DemoSnippets.e2d68c23-8599-40e8-b402-a57060bf3d29" Version="1.8.1" Language="en-US" Publisher="Matt Lacey" />
-        <DisplayName>DemoSnippets</DisplayName>
+        <Identity Id="DemoSnippets2019.e2d68c23-8599-40e8-b402-a57060bf3d29" Version="1.9" Language="en-US" Publisher="Matt Lacey" />
+        <DisplayName>DemoSnippets (2019)</DisplayName>
         <Description xml:space="preserve">A way to easily add the contents of *.demosnippets files to the Toolbox.</Description>
         <MoreInfo>https://github.com/mrlacey/DemoSnippets</MoreInfo>
         <License>Resources\LICENSE</License>
@@ -11,13 +11,12 @@
         <Tags>demo toolbox snippet</Tags>
     </Metadata>
     <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
     </Installation>
     <Dependencies>
-        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
     </Dependencies>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />

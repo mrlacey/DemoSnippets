@@ -98,7 +98,7 @@ namespace DemoSnippets.Outlining
                             Level = 2,
                             StartLine = currentLabel.StartLine,
                             StartOffset = currentLabel.StartOffset,
-                            EndLine = line.LineNumber - 1
+                            EndLine = line.LineNumber - 1,
                         });
 
                         currentLabel = null;
@@ -111,7 +111,7 @@ namespace DemoSnippets.Outlining
                             Level = 1,
                             StartLine = currentTab.StartLine,
                             StartOffset = currentTab.StartOffset,
-                            EndLine = line.LineNumber - 1
+                            EndLine = line.LineNumber - 1,
                         });
 
                         currentTab = null;
@@ -132,7 +132,7 @@ namespace DemoSnippets.Outlining
                             Level = 2,
                             StartLine = currentLabel.StartLine,
                             StartOffset = currentLabel.StartOffset,
-                            EndLine = line.LineNumber - 1
+                            EndLine = line.LineNumber - 1,
                         });
 
                         currentLabel = null;
@@ -142,7 +142,7 @@ namespace DemoSnippets.Outlining
                     {
                         StartLine = line.LineNumber,
                         StartOffset = text.TrimEnd().Length,
-                        PartialParent = currentTab
+                        PartialParent = currentTab,
                     };
                 }
             }
@@ -155,7 +155,7 @@ namespace DemoSnippets.Outlining
                     Level = 2,
                     StartLine = currentLabel.StartLine,
                     StartOffset = currentLabel.StartOffset,
-                    EndLine = newSnapshot.Lines.Count() - 1
+                    EndLine = newSnapshot.Lines.Count() - 1,
                 });
             }
 
@@ -166,7 +166,7 @@ namespace DemoSnippets.Outlining
                     Level = 1,
                     StartLine = currentTab.StartLine,
                     StartOffset = currentTab.StartOffset,
-                    EndLine = newSnapshot.Lines.Count() - 1
+                    EndLine = newSnapshot.Lines.Count() - 1,
                 });
 
                 currentTab = null;

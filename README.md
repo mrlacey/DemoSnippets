@@ -6,7 +6,7 @@
 Download this extension from the [VS Gallery](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets)
 or get the [CI build](http://vsixgallery.com/extension/DemoSnippets.e2d68c23-8599-40e8-b402-a57060bf3d29/).
 
-Supports Visual Studio 2017 & 2019
+Supports Visual Studio 2019
 
 ---------------------------------------
 
