@@ -60,7 +60,7 @@ namespace DemoSnippets
                         toAdd = new ToolboxEntry
                         {
                             Label = lineIdentifier.GetLabelName(line),
-                            Tab = tab
+                            Tab = tab,
                         };
                     }
                     else
@@ -78,7 +78,7 @@ namespace DemoSnippets
                             toAdd = new ToolboxEntry
                             {
                                 Label = lineIdentifier.GetLabelName(line),
-                                Tab = tab
+                                Tab = tab,
                             };
                         }
                     }
