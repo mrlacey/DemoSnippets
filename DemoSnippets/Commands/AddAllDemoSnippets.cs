@@ -44,9 +44,7 @@ namespace DemoSnippets.Commands
                 {
                     var slnDir = Path.GetDirectoryName(fileName);
 
-#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
                     var (fileCount, snippetCount) = await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
-#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
 
                     var filePlural = fileCount == 1 ? string.Empty : "s";
                     var snippetPlural = snippetCount == 1 ? string.Empty : "s";

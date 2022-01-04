@@ -43,8 +43,8 @@ namespace DemoSnippets
 
                 if (extension?.ToLowerInvariant() == ".demosnippets" || fileName.ToLowerInvariant().Contains(".demosnippets."))
                 {
-                    this.package.JoinableTaskFactory.RunAsync(async () =>
-                        await ToolboxInteractionLogic.RefreshEntriesFromFileAsync(documentPath));
+                    _ = this.package.JoinableTaskFactory.RunAsync(async () =>
+                          await ToolboxInteractionLogic.RefreshEntriesFromFileAsync(documentPath));
                 }
             }
 

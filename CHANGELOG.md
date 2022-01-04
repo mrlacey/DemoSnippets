@@ -13,6 +13,10 @@ on the official Visual Studio extension gallery.
 
 ## 1.8
 
+- [x] Support Visual Studio 2022
+
+## 1.8
+
 - [x] Add collapsible sections in .demosnippets files
 - [x] Add custom icon for .demosnippets files
 

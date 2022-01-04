@@ -10,6 +10,6 @@ namespace DemoSnippets
         Comment,
         Tab,
         Label,
-        EndSnippet
+        EndSnippet,
     }
 }

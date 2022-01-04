@@ -73,7 +73,7 @@ namespace DemoSnippets
             {
                 await OutputPane.Instance.WriteAsync($"Removing '{item.Label}' from tab '{item.Tab}'");
 
-                var toolbox = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
+                var toolbox = await Instance.ServiceProvider.GetServiceAsync<SVsToolbox, IVsToolbox2>();
 
                 IEnumToolboxItems tbItems = null;
 
@@ -126,7 +126,7 @@ namespace DemoSnippets
                 default:
                     try
                     {
-                        if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
+                        if (await Instance.ServiceProvider.GetServiceAsync<SVsToolbox, IVsToolbox2>() is IVsToolbox2 toolbox)
                         {
                             IEnumToolboxItems tbItems = null;
 
@@ -164,7 +164,7 @@ namespace DemoSnippets
 
             try
             {
-                if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
+                if (await Instance.ServiceProvider.GetServiceAsync<SVsToolbox, IVsToolbox2>() is IVsToolbox2 toolbox)
                 {
                     var tabsToRemove = new List<string>();
 
@@ -225,9 +225,7 @@ namespace DemoSnippets
             }
         }
 
-#pragma warning disable SA1009 // Closing parenthesis must be spaced correctly
         public static async Task<(int files, int snippets)> ProcessAllSnippetFilesAsync(string slnDirectory)
-#pragma warning restore SA1009 // Closing parenthesis must be spaced correctly
         {
             await OutputPane.Instance.WriteAsync($"Loading *.demosnippets files under: {slnDirectory}");
 
@@ -264,7 +262,7 @@ namespace DemoSnippets
 
             try
             {
-                if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
+                if (await Instance.ServiceProvider.GetServiceAsync<SVsToolbox, IVsToolbox2>() is IVsToolbox2 toolbox)
                 {
                     IEnumToolboxTabs tbTabs = null;
                     toolbox?.EnumTabs(out tbTabs);
@@ -298,7 +296,7 @@ namespace DemoSnippets
 
             try
             {
-                var toolbox = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
+                var toolbox = await Instance.ServiceProvider.GetServiceAsync<SVsToolbox, IVsToolbox2>();
 
                 var itemInfo = new TBXITEMINFO[1];
                 var tbItem = new OleDataObject();
@@ -344,7 +342,7 @@ namespace DemoSnippets
 
             try
             {
-                var toolbox = await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) as IVsToolbox;
+                var toolbox = await Instance.ServiceProvider.GetServiceAsync<SVsToolbox, IVsToolbox2>();
 
                 IEnumToolboxTabs tbTabs = null;
                 toolbox?.EnumTabs(out tbTabs);
@@ -408,7 +406,7 @@ namespace DemoSnippets
             {
                 var fileName = Path.GetFileName(filePath);
 
-                if (await Instance.ServiceProvider.GetServiceAsync(typeof(IVsToolbox)) is IVsToolbox toolbox)
+                if (await Instance.ServiceProvider.GetServiceAsync<SVsToolbox, IVsToolbox2>() is IVsToolbox2 toolbox)
                 {
                     IEnumToolboxTabs tbTabs = null;
                     toolbox?.EnumTabs(out tbTabs);

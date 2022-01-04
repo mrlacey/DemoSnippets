@@ -25,7 +25,6 @@ namespace DemoSnippets
     [Guid(DemoSnippetsPackage.PackageGuidString)]
     [ProvideOptionPage(typeof(OptionPageGrid), "DemoSnippets", "General", 0, 0, true)]
     [ProvideProfileAttribute(typeof(OptionPageGrid), "DemoSnippets", "General", 106, 107, isToolsOptionPage: true, DescriptionResourceID = 108)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     public sealed class DemoSnippetsPackage : AsyncPackage
     {
         public const string PackageGuidString = "9538932d-8cd5-4512-adb9-4c6b73adf57c";
@@ -123,9 +122,7 @@ namespace DemoSnippets
         {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-#pragma warning disable SA1119 // Statement must not use unnecessary parenthesis
             if (!(await this.GetServiceAsync(typeof(SVsSolution)) is IVsSolution solService))
-#pragma warning restore SA1119 // Statement must not use unnecessary parenthesis
             {
                 throw new ArgumentNullException(nameof(solService));
             }
@@ -155,9 +152,7 @@ namespace DemoSnippets
                     if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
                     {
                         var slnDir = Path.GetDirectoryName(fileName);
-#pragma warning disable SA1008 // Opening parenthesis must be spaced correctly
                         var (fileCount, snippetCount) = await ToolboxInteractionLogic.ProcessAllSnippetFilesAsync(slnDir);
-#pragma warning restore SA1008 // Opening parenthesis must be spaced correctly
 
                         var filePlural = fileCount == 1 ? string.Empty : "s";
                         var snippetPlural = snippetCount == 1 ? string.Empty : "s";
