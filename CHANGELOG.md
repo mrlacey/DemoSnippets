@@ -11,7 +11,7 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
-## 1.8
+## 1.9
 
 - [x] Support Visual Studio 2022
 
