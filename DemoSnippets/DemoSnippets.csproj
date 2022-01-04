@@ -80,6 +80,8 @@
     <Compile Include="OutputPane.cs" />
     <Compile Include="Commands\RemoveAllDemoSnippets.cs" />
     <Compile Include="DemoSnippetRunningDocTableEvents.cs" />
+    <Compile Include="SponsorDetector.cs" />
+    <Compile Include="SponsorRequestHelper.cs" />
     <Compile Include="ToolboxEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskExtensions.cs" />

@@ -76,6 +76,8 @@ namespace DemoSnippets
             await RemoveEmptyTabs.InitializeAsync(this);
             await RefreshThisFileInToolbox.InitializeAsync(this);
 
+            await SponsorRequestHelper.CheckIfNeedToShowAsync();
+
             await this.SetUpRunningDocumentTableEventsAsync(cancellationToken);
 
             // Since this package might not be initialized until after a solution has finished loading,
