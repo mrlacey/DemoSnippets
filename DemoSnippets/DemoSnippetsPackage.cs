@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -20,11 +19,11 @@ namespace DemoSnippets
     [ProvideAutoLoad(Microsoft.VisualStudio.Shell.Interop.UIContextGuids.SolutionHasMultipleProjects, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(Microsoft.VisualStudio.Shell.Interop.UIContextGuids.SolutionHasSingleProject, PackageAutoLoadFlags.BackgroundLoad)]
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("#110", "#112", "1.9", IconResourceID = 400)] // Info on this package for Help/About
+    [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(DemoSnippetsPackage.PackageGuidString)]
-    [ProvideOptionPage(typeof(OptionPageGrid), "DemoSnippets", "General", 0, 0, true)]
-    [ProvideProfileAttribute(typeof(OptionPageGrid), "DemoSnippets", "General", 106, 107, isToolsOptionPage: true, DescriptionResourceID = 108)]
+    [ProvideOptionPage(typeof(OptionPageGrid), Vsix.Name, "General", 0, 0, true)]
+    [ProvideProfileAttribute(typeof(OptionPageGrid), Vsix.Name, "General", 106, 107, isToolsOptionPage: true, DescriptionResourceID = 108)]
     public sealed class DemoSnippetsPackage : AsyncPackage
     {
         public const string PackageGuidString = "9538932d-8cd5-4512-adb9-4c6b73adf57c";

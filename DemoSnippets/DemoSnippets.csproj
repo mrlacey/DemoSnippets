@@ -80,6 +80,11 @@
     <Compile Include="OutputPane.cs" />
     <Compile Include="Commands\RemoveAllDemoSnippets.cs" />
     <Compile Include="DemoSnippetRunningDocTableEvents.cs" />
+    <Compile Include="source.extension.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>source.extension.vsixmanifest</DependentUpon>
+    </Compile>
     <Compile Include="SponsorDetector.cs" />
     <Compile Include="SponsorRequestHelper.cs" />
     <Compile Include="ToolboxEntry.cs" />
@@ -103,8 +108,11 @@
     <Content Include="Icons\Monikers.imagemanifest">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="signvsix.targets" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
+      <Generator>VsixManifestGenerator</Generator>
+      <LastGenOutput>source.extension.cs</LastGenOutput>
     </None>
     <AdditionalFiles Include="StyleCop.json" />
   </ItemGroup>
