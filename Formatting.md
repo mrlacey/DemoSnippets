@@ -65,7 +65,7 @@ All other comments or code in the file are ignored.
 
 ### Example
 
-Here is an example of a HTML file with embedded DemSnippets comments.
+Here is an example of a HTML file with embedded DemoSnippets comments.
 
 ```html
 <!DOCTYPE html>
