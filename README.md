@@ -1,12 +1,14 @@
 # Demo Snippets
 
-[![Build status](https://ci.appveyor.com/api/projects/status/n2awlsnbjapax7uf?svg=true)](https://ci.appveyor.com/project/mrlacey/demosnippets)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+![Works with Visual Studio 2019](https://img.shields.io/static/v1.svg?label=VS&message=2019&color=A853C7)
+![Works with Visual Studio 2022](https://img.shields.io/static/v1.svg?label=VS&message=2022&color=A853C7)
+![Visual Studio Marketplace 5 Stars](https://img.shields.io/badge/VS%20Marketplace-★★★★★-green)
 
-Download this extension from the [VS Gallery](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets)
-or get the [CI build](http://vsixgallery.com/extension/DemoSnippets.e2d68c23-8599-40e8-b402-a57060bf3d29/).
+[![Build](https://github.com/mrlacey/DemoSnippets/actions/workflows/build.yaml/badge.svg)](https://github.com/mrlacey/DemoSnippets/actions/workflows/build.yaml)
+![Tests](https://gist.githubusercontent.com/mrlacey/c586ff0f495b4a8dd76ab0dbdf9c89e0/raw/DemoSnippets.badge.svg)
 
-Supports Visual Studio 2019 & 2022
+Download this extension from the [VS Marketplace](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets).
 
 ---------------------------------------
 
