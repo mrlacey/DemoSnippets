@@ -8,7 +8,8 @@
 [![Build](https://github.com/mrlacey/DemoSnippets/actions/workflows/build.yaml/badge.svg)](https://github.com/mrlacey/DemoSnippets/actions/workflows/build.yaml)
 ![Tests](https://gist.githubusercontent.com/mrlacey/c586ff0f495b4a8dd76ab0dbdf9c89e0/raw/DemoSnippets.badge.svg)
 
-Download this extension from the [VS Marketplace(https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets)].
+Download this extension from the [VS Marketplace](https://marketplace.visualstudio.com/items?itemName=MattLaceyLtd.DemoSnippets).
+
 ---------------------------------------
 
 Visual Studio extension that provides functionality relating to *.demosnippets files and interacting with the Toolbox.
