@@ -11,7 +11,7 @@ namespace DemoSnippets
         public const string Name = "DemoSnippets";
         public const string Description = @"A way to easily add the contents of *.demosnippets files to the Toolbox.";
         public const string Language = "en-US";
-        public const string Version = "1.9.3";
+        public const string Version = "1.9.4";
         public const string Author = "Matt Lacey";
         public const string Tags = "demo toolbox snippet";
     }
