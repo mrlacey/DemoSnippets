@@ -11,7 +11,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace DemoSnippets
 {
-    public class OutputPane
+	public class OutputPane
     {
         private static Guid dsPaneGuid = new Guid("DF45715C-F87B-4B53-B926-BB8C30C7F804");
 
@@ -54,5 +54,5 @@ namespace DemoSnippets
 
             this.pane?.OutputStringThreadSafe($"{message}{Environment.NewLine}");
         }
-    }
+	}
 }
