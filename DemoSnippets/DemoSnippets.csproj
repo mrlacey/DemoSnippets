@@ -99,8 +99,9 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Resource Include="Icons\demos.png" />
+    <None Include="filestosign.txt" />
     <Content Include="LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\Icon.png">
