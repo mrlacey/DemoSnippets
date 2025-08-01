@@ -98,6 +98,9 @@
       <Link>Resources\LICENSE</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Resources\Icon_16.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Resource Include="Icons\demos.png" />
     <None Include="filestosign.txt" />
     <Content Include="LICENSE.txt">
